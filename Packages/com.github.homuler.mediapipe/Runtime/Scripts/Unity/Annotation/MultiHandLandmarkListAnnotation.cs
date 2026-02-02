@@ -26,14 +26,12 @@ namespace Mediapipe.Unity
 #if UNITY_EDITOR
     private void OnValidate()
     {
-      if (!UnityEditor.PrefabUtility.IsPartOfAnyPrefab(this))
-      {
-        ApplyLeftLandmarkColor(_leftLandmarkColor);
-        ApplyRightLandmarkColor(_rightLandmarkColor);
-        ApplyLandmarkRadius(_landmarkRadius);
-        ApplyConnectionColor(_connectionColor);
-        ApplyConnectionWidth(_connectionWidth);
-      }
+      if (UnityEditor.PrefabUtility.IsPartOfAnyPrefab(this)) return;
+      ApplyLeftLandmarkColor(_leftLandmarkColor);
+      ApplyRightLandmarkColor(_rightLandmarkColor);
+      ApplyLandmarkRadius(_landmarkRadius);
+      ApplyConnectionColor(_connectionColor);
+      ApplyConnectionWidth(_connectionWidth);
     }
 #endif
 

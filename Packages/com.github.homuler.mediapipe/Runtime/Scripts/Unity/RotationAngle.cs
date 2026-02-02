@@ -4,11 +4,12 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Mediapipe.Unity
 {
-  public enum RotationAngle
+  public enum RotationAngle : ushort
   {
     Rotation0 = 0,
     Rotation90 = 90,
@@ -33,9 +34,9 @@ namespace Mediapipe.Unity
       return (RotationAngle)((360 - (int)rotationAngle) % 360);
     }
 
-    public static Vector3 GetEulerAngles(this RotationAngle rotationAngle)
+    public static float3 GetEulerAngles(this RotationAngle rotationAngle)
     {
-      return new Vector3(0, 0, (int)rotationAngle);
+      return new float3(0, 0, (int)rotationAngle);
     }
   }
 }

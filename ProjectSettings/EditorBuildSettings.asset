@@ -32,4 +32,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/MediaPipeUnity/Samples/Scenes/Legacy/MediaPipe Video/MediaPipe Video.unity
     guid: 16062faf4cda54140b781b925351b119
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000,
+      guid: 3c64826a7184bff428ff3e4c45d84c21, type: 2}
+    com.unity.addressableassets: {fileID: 11400000, guid: 15a61431265a6ff45b75c21b1a0574f1,
+      type: 2}
+  m_UseUCBPForAssetBundles: 0

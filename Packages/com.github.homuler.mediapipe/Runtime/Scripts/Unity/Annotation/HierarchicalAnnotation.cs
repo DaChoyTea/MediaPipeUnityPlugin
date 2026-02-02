@@ -25,7 +25,7 @@ namespace Mediapipe.Unity
       {
         if (_root == null)
         {
-          var parentObj = transform.parent == null ? null : transform.parent.gameObject;
+          var parentObj = transform.parent?.gameObject;
           _root = (parentObj != null && parentObj.TryGetComponent<IHierachicalAnnotation>(out var parent)) ? parent.root : this;
         }
         return _root;
@@ -65,7 +65,7 @@ namespace Mediapipe.Unity
     /// <param name="target">Data to be annotated</param>
     protected bool ActivateFor<T>(T target)
     {
-      if (target == null)
+      if (target is null)
       {
         SetActive(false);
         return false;
@@ -77,7 +77,8 @@ namespace Mediapipe.Unity
     public virtual bool isMirrored { get; set; }
     public virtual RotationAngle rotationAngle { get; set; } = RotationAngle.Rotation0;
 
-    protected TAnnotation InstantiateChild<TAnnotation>(GameObject prefab) where TAnnotation : HierarchicalAnnotation
+    protected TAnnotation InstantiateChild<TAnnotation>(GameObject prefab) 
+      where TAnnotation : HierarchicalAnnotation
     {
       var annotation = Instantiate(prefab, transform).GetComponent<TAnnotation>();
       annotation.isMirrored = isMirrored;
@@ -85,7 +86,8 @@ namespace Mediapipe.Unity
       return annotation;
     }
 
-    protected TAnnotation InstantiateChild<TAnnotation>(string name = "Game Object") where TAnnotation : HierarchicalAnnotation
+    protected TAnnotation InstantiateChild<TAnnotation>(string name = "Game Object") 
+      where TAnnotation : HierarchicalAnnotation
     {
       var gameObject = new GameObject(name);
       gameObject.transform.SetParent(transform);
