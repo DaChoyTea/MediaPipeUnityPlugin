@@ -30,7 +30,7 @@ namespace Mediapipe.Unity.Sample
 		protected virtual IEnumerator Start()
 		{
 			bootstrap = FindBootstrap();
-			yield return new WaitUntil(() => bootstrap.isFinished);
+			yield return new WaitUntil(() => bootstrap.IsFinished);
 
 			Play();
 		}

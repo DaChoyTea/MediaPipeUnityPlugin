@@ -42,7 +42,7 @@ namespace Mediapipe.Unity.Sample.PoseLandmarkDetection
 
 			var options = config.GetPoseLandmarkerOptions(
 				config.RunningMode == Tasks.Vision.Core.RunningMode.LIVE_STREAM ? OnPoseLandmarkDetectionOutput : null);
-			taskApi = PoseLandmarker.CreateFromOptions(options, GpuManager.GpuResources);
+			TaskApi = PoseLandmarker.CreateFromOptions(options, GpuManager.GpuResources);
 			var imageSource = ImageSourceProvider.ImageSource;
 
 			yield return imageSource.Play();
@@ -136,10 +136,10 @@ namespace Mediapipe.Unity.Sample.PoseLandmarkDetection
 						break;
 				}
 
-				switch (taskApi.runningMode)
+				switch (TaskApi.RunningMode)
 				{
 					case Tasks.Vision.Core.RunningMode.IMAGE:
-						if (taskApi.TryDetect(image, imageProcessingOptions, ref result))
+						if (TaskApi.TryDetect(image, imageProcessingOptions, ref result))
 						{
 							_poseLandmarkerResultAnnotationController.DrawNow(result);
 						}
@@ -151,7 +151,7 @@ namespace Mediapipe.Unity.Sample.PoseLandmarkDetection
 						DisposeAllMasks(result);
 						break;
 					case Tasks.Vision.Core.RunningMode.VIDEO:
-						if (taskApi.TryDetectForVideo(image, GetCurrentTimestampMillisec(), imageProcessingOptions,
+						if (TaskApi.TryDetectForVideo(image, GetCurrentTimestampMillisec(), imageProcessingOptions,
 							    ref result))
 						{
 							_poseLandmarkerResultAnnotationController.DrawNow(result);
@@ -164,7 +164,7 @@ namespace Mediapipe.Unity.Sample.PoseLandmarkDetection
 						DisposeAllMasks(result);
 						break;
 					case Tasks.Vision.Core.RunningMode.LIVE_STREAM:
-						taskApi.DetectAsync(image, GetCurrentTimestampMillisec(), imageProcessingOptions);
+						TaskApi.DetectAsync(image, GetCurrentTimestampMillisec(), imageProcessingOptions);
 						break;
 				}
 			}

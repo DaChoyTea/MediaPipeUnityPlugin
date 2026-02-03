@@ -41,7 +41,7 @@ namespace Mediapipe.Unity.Sample.HandLandmarkDetection
 
 			var options = config.GetHandLandmarkerOptions(
 				config.RunningMode == Tasks.Vision.Core.RunningMode.LIVE_STREAM ? OnHandLandmarkDetectionOutput : null);
-			taskApi = HandLandmarker.CreateFromOptions(options, GpuManager.GpuResources);
+			TaskApi = HandLandmarker.CreateFromOptions(options, GpuManager.GpuResources);
 			var imageSource = ImageSourceProvider.ImageSource;
 
 			yield return imageSource.Play();
@@ -132,10 +132,10 @@ namespace Mediapipe.Unity.Sample.HandLandmarkDetection
 						break;
 				}
 
-				switch (taskApi.runningMode)
+				switch (TaskApi.RunningMode)
 				{
 					case Tasks.Vision.Core.RunningMode.IMAGE:
-						if (taskApi.TryDetect(image, imageProcessingOptions, ref result))
+						if (TaskApi.TryDetect(image, imageProcessingOptions, ref result))
 						{
 							handLandmarkerResultAnnotationController.DrawNow(result);
 						}
@@ -147,13 +147,13 @@ namespace Mediapipe.Unity.Sample.HandLandmarkDetection
 						break;
 					case Tasks.Vision.Core.RunningMode.VIDEO:
 						handLandmarkerResultAnnotationController.DrawNow(
-							taskApi.TryDetectForVideo(image, GetCurrentTimestampMillisec(), imageProcessingOptions,
+							TaskApi.TryDetectForVideo(image, GetCurrentTimestampMillisec(), imageProcessingOptions,
 								ref result)
 								? result
 								: default);
 						break;
 					case Tasks.Vision.Core.RunningMode.LIVE_STREAM:
-						taskApi.DetectAsync(image, GetCurrentTimestampMillisec(), imageProcessingOptions);
+						TaskApi.DetectAsync(image, GetCurrentTimestampMillisec(), imageProcessingOptions);
 						break;
 				}
 			}

@@ -15,14 +15,14 @@ namespace Mediapipe.Unity
 
 	public class LineAnnotation : HierarchicalAnnotation
 	{
-		[SerializeField] private LineRenderer _lineRenderer;
-		[SerializeField] private Color _color = Color.green;
-		[SerializeField, Range(0, 1)] private float _lineWidth = 1.0f;
+		[SerializeField] private LineRenderer lineRenderer;
+		[SerializeField] private Color color = Color.green;
+		[SerializeField, Range(0, 1)] private float lineWidth = 1.0f;
 
 		private void OnEnable()
 		{
-			ApplyColor(_color);
-			ApplyLineWidth(_lineWidth);
+			ApplyColor(color);
+			ApplyLineWidth(lineWidth);
 		}
 
 		private void OnDisable()
@@ -35,50 +35,46 @@ namespace Mediapipe.Unity
 		{
 			if (!UnityEditor.PrefabUtility.IsPartOfAnyPrefab(this))
 			{
-				ApplyColor(_color);
-				ApplyLineWidth(_lineWidth);
+				ApplyColor(color);
+				ApplyLineWidth(lineWidth);
 			}
 		}
 #endif
 
-		public void SetColor(Color color)
+		public void SetColor(Color col)
 		{
-			_color = color;
-			ApplyColor(_color);
+			color = col;
+			ApplyColor(color);
 		}
 
-		public void SetLineWidth(float lineWidth)
+		public void SetLineWidth(float width)
 		{
-			_lineWidth = lineWidth;
-			ApplyLineWidth(_lineWidth);
+			lineWidth = width;
+			ApplyLineWidth(lineWidth);
 		}
 
 		public void Draw(Vector3 a, Vector3 b)
 		{
-			_lineRenderer.SetPositions(new Vector3[] { a, b });
+			lineRenderer.SetPositions(new Vector3[] { a, b });
 		}
 
 		public void Draw(GameObject a, GameObject b)
 		{
-			_lineRenderer.SetPositions(new Vector3[] { a.transform.localPosition, b.transform.localPosition });
+			lineRenderer.SetPositions(new Vector3[] { a.transform.localPosition, b.transform.localPosition });
 		}
 
-		public void ApplyColor(Color color)
+		public void ApplyColor(Color col)
 		{
-			if (_lineRenderer != null)
-			{
-				_lineRenderer.startColor = color;
-				_lineRenderer.endColor = color;
-			}
+			if (lineRenderer is null) return;
+			lineRenderer.startColor = col;
+			lineRenderer.endColor = col;
 		}
 
-		private void ApplyLineWidth(float lineWidth)
+		private void ApplyLineWidth(float width)
 		{
-			if (_lineRenderer != null)
-			{
-				_lineRenderer.startWidth = lineWidth;
-				_lineRenderer.endWidth = lineWidth;
-			}
+			if (lineRenderer is null) return;
+			lineRenderer.startWidth = width;
+			lineRenderer.endWidth = width;
 		}
 	}
 }

@@ -29,7 +29,7 @@ namespace Mediapipe.Unity
 
 		protected bool ActivateFor(Connection target)
 		{
-			if (target == null || !target.start.isActiveInHierarchy || !target.end.isActiveInHierarchy)
+			if (target is null || !target.start.isActiveInHierarchy || !target.end.isActiveInHierarchy)
 			{
 				SetActive(false);
 				return false;

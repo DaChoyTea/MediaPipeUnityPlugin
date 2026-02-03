@@ -42,7 +42,7 @@ namespace Mediapipe.Unity.Sample.FaceLandmarkDetection
 
 			var options = config.GetFaceLandmarkerOptions(
 				config.RunningMode == Tasks.Vision.Core.RunningMode.LIVE_STREAM ? OnFaceLandmarkDetectionOutput : null);
-			taskApi = FaceLandmarker.CreateFromOptions(options, GpuManager.GpuResources);
+			TaskApi = FaceLandmarker.CreateFromOptions(options, GpuManager.GpuResources);
 			var imageSource = ImageSourceProvider.ImageSource;
 
 			yield return imageSource.Play();
@@ -133,10 +133,10 @@ namespace Mediapipe.Unity.Sample.FaceLandmarkDetection
 						break;
 				}
 
-				switch (taskApi.runningMode)
+				switch (TaskApi.RunningMode)
 				{
 					case Tasks.Vision.Core.RunningMode.IMAGE:
-						if (taskApi.TryDetect(image, imageProcessingOptions, ref result))
+						if (TaskApi.TryDetect(image, imageProcessingOptions, ref result))
 						{
 							_faceLandmarkerResultAnnotationController.DrawNow(result);
 						}
@@ -147,7 +147,7 @@ namespace Mediapipe.Unity.Sample.FaceLandmarkDetection
 
 						break;
 					case Tasks.Vision.Core.RunningMode.VIDEO:
-						if (taskApi.TryDetectForVideo(image, GetCurrentTimestampMillisec(), imageProcessingOptions,
+						if (TaskApi.TryDetectForVideo(image, GetCurrentTimestampMillisec(), imageProcessingOptions,
 							    ref result))
 						{
 							_faceLandmarkerResultAnnotationController.DrawNow(result);
@@ -159,7 +159,7 @@ namespace Mediapipe.Unity.Sample.FaceLandmarkDetection
 
 						break;
 					case Tasks.Vision.Core.RunningMode.LIVE_STREAM:
-						taskApi.DetectAsync(image, GetCurrentTimestampMillisec(), imageProcessingOptions);
+						TaskApi.DetectAsync(image, GetCurrentTimestampMillisec(), imageProcessingOptions);
 						break;
 				}
 			}

@@ -44,11 +44,11 @@ namespace Mediapipe.Unity
 		public bool isActive => gameObject.activeSelf;
 		public bool isActiveInHierarchy => gameObject.activeInHierarchy;
 
-		public void SetActive(bool isActive)
+		public void SetActive(bool active)
 		{
-			if (this.isActive != isActive)
+			if (isActive != active)
 			{
-				gameObject.SetActive(isActive);
+				gameObject.SetActive(active);
 			}
 		}
 
@@ -76,22 +76,22 @@ namespace Mediapipe.Unity
 		public virtual bool isMirrored { get; set; }
 		public virtual RotationAngle rotationAngle { get; set; } = RotationAngle.Rotation0;
 
-		protected TAnnotation InstantiateChild<TAnnotation>(GameObject prefab)
-			where TAnnotation : HierarchicalAnnotation
+		protected TH InstantiateChild<TH>(GameObject prefab)
+			where TH : HierarchicalAnnotation
 		{
-			var annotation = Instantiate(prefab, transform).GetComponent<TAnnotation>();
+			var annotation = Instantiate(prefab, transform).GetComponent<TH>();
 			annotation.isMirrored = isMirrored;
 			annotation.rotationAngle = rotationAngle;
 			return annotation;
 		}
 
-		protected TAnnotation InstantiateChild<TAnnotation>(string name = "Game Object")
-			where TAnnotation : HierarchicalAnnotation
+		protected TH InstantiateChild<TH>(string name = "Game Object")
+			where TH : HierarchicalAnnotation
 		{
 			var gameOb = new GameObject(name);
 			gameOb.transform.SetParent(transform);
 
-			return gameOb.AddComponent<TAnnotation>();
+			return gameOb.AddComponent<TH>();
 		}
 	}
 }

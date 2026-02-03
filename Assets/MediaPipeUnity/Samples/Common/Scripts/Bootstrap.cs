@@ -14,8 +14,8 @@ namespace Mediapipe.Unity.Sample
 	{
 		[SerializeField] private AppSettings appSettings;
 
-		public InferenceMode inferenceMode { get; private set; }
-		public bool isFinished { get; private set; }
+		public InferenceMode InferenceMode { get; private set; }
+		public bool IsFinished { get; private set; }
 		private bool _isGlogInitialized;
 
 		private void OnEnable()
@@ -71,7 +71,7 @@ namespace Mediapipe.Unity.Sample
 			}
 
 			DecideInferenceMode();
-			if (inferenceMode == InferenceMode.GPU)
+			if (InferenceMode == InferenceMode.GPU)
 			{
 				Debug.Log("Initializing GPU resources...");
 				yield return GpuManager.Initialize();
@@ -88,7 +88,7 @@ namespace Mediapipe.Unity.Sample
 				appSettings.BuildWebCamSource(), appSettings.BuildStaticImageSource(), appSettings.BuildVideoSource());
 			ImageSourceProvider.Switch(appSettings.defaultImageSource);
 
-			isFinished = true;
+			IsFinished = true;
 		}
 
 		private void DecideInferenceMode()
@@ -99,9 +99,9 @@ namespace Mediapipe.Unity.Sample
 				Debug.LogWarning("Current platform does not support GPU inference mode, so falling back to CPU mode");
 			}
 
-			inferenceMode = InferenceMode.CPU;
+			InferenceMode = InferenceMode.CPU;
 #else
-      inferenceMode = appSettings.preferableInferenceMode;
+      InferenceMode = appSettings.preferableInferenceMode;
 #endif
 		}
 

@@ -14,7 +14,7 @@ namespace Mediapipe.Tasks.Vision.Core
 	public class BaseVisionTaskApi : IDisposable
 	{
 		private readonly Tasks.Core.TaskRunner _taskRunner;
-		public RunningMode runningMode { get; }
+		public RunningMode RunningMode { get; }
 		private bool _isClosed = false;
 
 		/// <summary>
@@ -69,7 +69,7 @@ namespace Mediapipe.Tasks.Vision.Core
 				_taskRunner = Tasks.Core.TaskRunner.Create(graphConfig, callbackId, nativePacketsCallback);
 			}
 
-			this.runningMode = runningMode;
+			this.RunningMode = runningMode;
 		}
 
 		/// <summary>
@@ -81,10 +81,10 @@ namespace Mediapipe.Tasks.Vision.Core
 		/// </exception>
 		protected PacketMap ProcessImageData(PacketMap inputs)
 		{
-			if (runningMode != RunningMode.IMAGE)
+			if (RunningMode != RunningMode.IMAGE)
 			{
 				throw new InvalidOperationException(
-					$"Task is not initialized with the image mode. Current running mode: {runningMode}");
+					$"Task is not initialized with the image mode. Current running mode: {RunningMode}");
 			}
 
 			return _taskRunner.Process(inputs);
@@ -99,10 +99,10 @@ namespace Mediapipe.Tasks.Vision.Core
 		/// </exception>
 		protected PacketMap ProcessVideoData(PacketMap inputs)
 		{
-			if (runningMode != RunningMode.VIDEO)
+			if (RunningMode != RunningMode.VIDEO)
 			{
 				throw new InvalidOperationException(
-					$"Task is not initialized with the video mode. Current running mode: {runningMode}");
+					$"Task is not initialized with the video mode. Current running mode: {RunningMode}");
 			}
 
 			return _taskRunner.Process(inputs);
@@ -117,10 +117,10 @@ namespace Mediapipe.Tasks.Vision.Core
 		/// </exception>
 		protected void SendLiveStreamData(PacketMap inputs)
 		{
-			if (runningMode != RunningMode.LIVE_STREAM)
+			if (RunningMode != RunningMode.LIVE_STREAM)
 			{
 				throw new InvalidOperationException(
-					$"Task is not initialized with the live stream mode. Current running mode: {runningMode}");
+					$"Task is not initialized with the live stream mode. Current running mode: {RunningMode}");
 			}
 
 			_taskRunner.Send(inputs);

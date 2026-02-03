@@ -18,51 +18,51 @@ namespace Mediapipe
 			FATAL = 3,
 		}
 
-		private static bool _Logtostderr = false;
+		private static bool _logtostderr = false;
 
 		public static bool Logtostderr
 		{
-			get => _Logtostderr;
+			get => _logtostderr;
 			set
 			{
 				UnsafeNativeMethods.glog_FLAGS_logtostderr(value);
-				_Logtostderr = value;
+				_logtostderr = value;
 			}
 		}
 
-		private static int _Stderrthreshold = 2;
+		private static int _stderrthreshold = 2;
 
 		public static int Stderrthreshold
 		{
-			get => _Stderrthreshold;
+			get => _stderrthreshold;
 			set
 			{
 				UnsafeNativeMethods.glog_FLAGS_stderrthreshold(value);
-				_Stderrthreshold = value;
+				_stderrthreshold = value;
 			}
 		}
 
-		private static int _Minloglevel = 0;
+		private static int _minloglevel = 0;
 
 		public static int Minloglevel
 		{
-			get => _Minloglevel;
+			get => _minloglevel;
 			set
 			{
 				UnsafeNativeMethods.glog_FLAGS_minloglevel(value);
-				_Minloglevel = value;
+				_minloglevel = value;
 			}
 		}
 
-		private static string _LogDir;
+		private static string _logDir;
 
 		public static string LogDir
 		{
-			get => _LogDir;
+			get => _logDir;
 			set
 			{
 				UnsafeNativeMethods.glog_FLAGS_log_dir(value ?? "");
-				_LogDir = value;
+				_logDir = value;
 			}
 		}
 

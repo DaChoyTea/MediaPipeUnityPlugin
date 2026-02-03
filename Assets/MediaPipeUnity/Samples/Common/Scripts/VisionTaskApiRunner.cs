@@ -16,7 +16,7 @@ namespace Mediapipe.Unity.Sample
 		[SerializeField] protected Screen screen;
 
 		private Coroutine _coroutine;
-		protected T taskApi;
+		protected T TaskApi;
 
 		public RunningMode runningMode;
 
@@ -48,8 +48,8 @@ namespace Mediapipe.Unity.Sample
 			base.Stop();
 			StopCoroutine(_coroutine);
 			ImageSourceProvider.ImageSource.Stop();
-			taskApi?.Close();
-			taskApi = null;
+			TaskApi?.Close();
+			TaskApi = null;
 		}
 
 		protected abstract IEnumerator Run();

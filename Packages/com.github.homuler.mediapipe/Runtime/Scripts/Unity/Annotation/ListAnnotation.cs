@@ -33,7 +33,7 @@ namespace Mediapipe.Unity
 
 		public T this[int index] => children[index];
 
-		public int count => children.Count;
+		public int Count => children.Count;
 
 		public void Fill(int amount)
 		{

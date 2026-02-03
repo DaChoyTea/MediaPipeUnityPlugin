@@ -42,7 +42,7 @@ namespace Mediapipe.Unity.Sample.FaceDetection
 			var options = config.GetFaceDetectorOptions(config.RunningMode == Tasks.Vision.Core.RunningMode.LIVE_STREAM
 				? OnFaceDetectionsOutput
 				: null);
-			taskApi = FaceDetector.CreateFromOptions(options, GpuManager.GpuResources);
+			TaskApi = FaceDetector.CreateFromOptions(options, GpuManager.GpuResources);
 			var imageSource = ImageSourceProvider.ImageSource;
 
 			yield return imageSource.Play();
@@ -133,10 +133,10 @@ namespace Mediapipe.Unity.Sample.FaceDetection
 						break;
 				}
 
-				switch (taskApi.runningMode)
+				switch (TaskApi.RunningMode)
 				{
 					case Tasks.Vision.Core.RunningMode.IMAGE:
-						if (taskApi.TryDetect(image, imageProcessingOptions, ref result))
+						if (TaskApi.TryDetect(image, imageProcessingOptions, ref result))
 						{
 							_detectionResultAnnotationController.DrawNow(result);
 						}
@@ -148,7 +148,7 @@ namespace Mediapipe.Unity.Sample.FaceDetection
 
 						break;
 					case Tasks.Vision.Core.RunningMode.VIDEO:
-						if (taskApi.TryDetectForVideo(image, GetCurrentTimestampMillisec(), imageProcessingOptions,
+						if (TaskApi.TryDetectForVideo(image, GetCurrentTimestampMillisec(), imageProcessingOptions,
 							    ref result))
 						{
 							_detectionResultAnnotationController.DrawNow(result);
@@ -161,7 +161,7 @@ namespace Mediapipe.Unity.Sample.FaceDetection
 
 						break;
 					case Tasks.Vision.Core.RunningMode.LIVE_STREAM:
-						taskApi.DetectAsync(image, GetCurrentTimestampMillisec(), imageProcessingOptions);
+						TaskApi.DetectAsync(image, GetCurrentTimestampMillisec(), imageProcessingOptions);
 						break;
 				}
 			}

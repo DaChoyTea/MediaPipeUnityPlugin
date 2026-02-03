@@ -38,7 +38,7 @@ namespace Mediapipe.Unity.Sample.ImageSegmentation
 
 			var options = config.GetImageSegmenterOptions(
 				config.RunningMode == Tasks.Vision.Core.RunningMode.LIVE_STREAM ? OnImageSegmentationOutput : null);
-			taskApi = ImageSegmenter.CreateFromOptions(options, GpuManager.GpuResources);
+			TaskApi = ImageSegmenter.CreateFromOptions(options, GpuManager.GpuResources);
 			var imageSource = ImageSourceProvider.ImageSource;
 
 			yield return imageSource.Play();
@@ -133,10 +133,10 @@ namespace Mediapipe.Unity.Sample.ImageSegmentation
 						break;
 				}
 
-				switch (taskApi.runningMode)
+				switch (TaskApi.RunningMode)
 				{
 					case Tasks.Vision.Core.RunningMode.IMAGE:
-						if (taskApi.TrySegment(image, imageProcessingOptions, ref result))
+						if (TaskApi.TrySegment(image, imageProcessingOptions, ref result))
 						{
 							_imageSegmenterResultAnnotationController.DrawNow(result);
 						}
@@ -148,7 +148,7 @@ namespace Mediapipe.Unity.Sample.ImageSegmentation
 						DisposeAllMasks(result);
 						break;
 					case Tasks.Vision.Core.RunningMode.VIDEO:
-						if (taskApi.TrySegmentForVideo(image, GetCurrentTimestampMillisec(), imageProcessingOptions,
+						if (TaskApi.TrySegmentForVideo(image, GetCurrentTimestampMillisec(), imageProcessingOptions,
 							    ref result))
 						{
 							_imageSegmenterResultAnnotationController.DrawNow(result);
@@ -161,7 +161,7 @@ namespace Mediapipe.Unity.Sample.ImageSegmentation
 						DisposeAllMasks(result);
 						break;
 					case Tasks.Vision.Core.RunningMode.LIVE_STREAM:
-						taskApi.SegmentAsync(image, GetCurrentTimestampMillisec(), imageProcessingOptions);
+						TaskApi.SegmentAsync(image, GetCurrentTimestampMillisec(), imageProcessingOptions);
 						break;
 				}
 			}
