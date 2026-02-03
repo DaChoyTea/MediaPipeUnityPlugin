@@ -11,7 +11,7 @@ namespace Mediapipe.Unity.Sample
 {
   public class Bootstrap : MonoBehaviour
   {
-    [SerializeField] private AppSettings _appSettings;
+    [SerializeField] private AppSettings appSettings;
 
     public InferenceMode inferenceMode { get; private set; }
     public bool isFinished { get; private set; }
@@ -29,17 +29,17 @@ namespace Mediapipe.Unity.Sample
       Debug.LogWarning("Logging for the MediaPipeUnityPlugin will be suppressed. To enable logging, please check the 'Development Build' option and build.");
 #endif
 
-      Logger.MinLogLevel = _appSettings.logLevel;
+      Logger.MinLogLevel = appSettings.logLevel;
 
       Protobuf.SetLogHandler(Protobuf.DefaultLogHandler);
 
       Debug.Log("Setting global flags...");
-      _appSettings.ResetGlogFlags();
+      appSettings.ResetGlogFlags();
       Glog.Initialize("MediaPipeUnityPlugin");
       _isGlogInitialized = true;
 
       Debug.Log("Initializing AssetLoader...");
-      switch (_appSettings.assetLoaderType)
+      switch (appSettings.assetLoaderType)
       {
         case AppSettings.AssetLoaderType.AssetBundle:
           {
@@ -64,7 +64,7 @@ namespace Mediapipe.Unity.Sample
           }
         default:
           {
-            Debug.LogError($"AssetLoaderType is unknown: {_appSettings.assetLoaderType}");
+            Debug.LogError($"AssetLoaderType is unknown: {appSettings.assetLoaderType}");
             yield break;
           }
       }
@@ -83,8 +83,8 @@ namespace Mediapipe.Unity.Sample
 
       Debug.Log("Preparing ImageSource...");
       ImageSourceProvider.Initialize(
-        _appSettings.BuildWebCamSource(), _appSettings.BuildStaticImageSource(), _appSettings.BuildVideoSource());
-      ImageSourceProvider.Switch(_appSettings.defaultImageSource);
+        appSettings.BuildWebCamSource(), appSettings.BuildStaticImageSource(), appSettings.BuildVideoSource());
+      ImageSourceProvider.Switch(appSettings.defaultImageSource);
 
       isFinished = true;
     }
@@ -92,12 +92,12 @@ namespace Mediapipe.Unity.Sample
     private void DecideInferenceMode()
     {
 #if UNITY_EDITOR_OSX || UNITY_EDITOR_WIN
-      if (_appSettings.preferableInferenceMode == InferenceMode.GPU) {
+      if (appSettings.preferableInferenceMode == InferenceMode.GPU) {
         Debug.LogWarning("Current platform does not support GPU inference mode, so falling back to CPU mode");
       }
       inferenceMode = InferenceMode.CPU;
 #else
-      inferenceMode = _appSettings.preferableInferenceMode;
+      inferenceMode = appSettings.preferableInferenceMode;
 #endif
     }
 
