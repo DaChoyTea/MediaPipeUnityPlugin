@@ -6,13 +6,15 @@
 
 using System;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Mediapipe.Unity
 {
-  public abstract class ListAnnotation<T> : HierarchicalAnnotation where T : HierarchicalAnnotation
+  public abstract class ListAnnotation<T> : HierarchicalAnnotation 
+    where T : HierarchicalAnnotation
   {
-    [SerializeField] private GameObject _annotationPrefab;
+    [SerializeField] private HierarchicalAnnotation _annotationPrefab;
 
     private List<T> _children;
     protected List<T> children
@@ -79,7 +81,7 @@ namespace Mediapipe.Unity
 
     protected virtual T InstantiateChild(bool isActive = true)
     {
-      var annotation = InstantiateChild<T>(_annotationPrefab);
+      var annotation = InstantiateChild<T>(_annotationPrefab.gameObject);
       annotation.SetActive(isActive);
       return annotation;
     }
@@ -95,7 +97,7 @@ namespace Mediapipe.Unity
     /// </param>
     protected void CallActionForAll<TArg>(IReadOnlyList<TArg> argumentList, Action<T, TArg> action)
     {
-      for (var i = 0; i < Mathf.Max(children.Count, argumentList.Count); i++)
+      for (var i = 0; i < math.max(children.Count, argumentList.Count); i++)
       {
         if (i >= argumentList.Count)
         {
@@ -110,7 +112,7 @@ namespace Mediapipe.Unity
           // children.Count < argumentList.Count
           children.Add(InstantiateChild());
         }
-        else if (children[i] == null)
+        else if (children[i] is null)
         {
           // child is not initialized yet
           children[i] = InstantiateChild();

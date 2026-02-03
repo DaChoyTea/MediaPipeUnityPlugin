@@ -5,6 +5,7 @@
 // https://opensource.org/licenses/MIT.
 
 using Mediapipe.Unity.CoordinateSystem;
+using Unity.Mathematics;
 using UnityEngine;
 
 using mplt = Mediapipe.LocationData.Types;
@@ -17,50 +18,48 @@ namespace Mediapipe.Unity
 
   public class RectangleAnnotation : HierarchicalAnnotation
   {
-    [SerializeField] private LineRenderer _lineRenderer;
-    [SerializeField] private Color _color = Color.red;
-    [SerializeField, Range(0, 1)] private float _lineWidth = 1.0f;
+    [SerializeField] private LineRenderer lineRenderer;
+    [SerializeField] private Color color = Color.red;
+    [SerializeField, Range(0, 1)] private float lineWidth = 1.0f;
 
-    private static readonly Vector3[] _EmptyPositions = new Vector3[] { Vector3.zero, Vector3.zero, Vector3.zero, Vector3.zero };
+    private static readonly Vector3[] _EmptyPositions = new Vector3[] { };
 
     private void OnEnable()
     {
-      ApplyColor(_color);
-      ApplyLineWidth(_lineWidth);
+      ApplyColor(color);
+      ApplyLineWidth(lineWidth);
     }
 
     private void OnDisable()
     {
       ApplyLineWidth(0.0f);
-      _lineRenderer.SetPositions(_EmptyPositions);
+      lineRenderer.SetPositions(_EmptyPositions);
     }
 
 #if UNITY_EDITOR
     private void OnValidate()
     {
-      if (!UnityEditor.PrefabUtility.IsPartOfAnyPrefab(this))
-      {
-        ApplyColor(_color);
-        ApplyLineWidth(_lineWidth);
-      }
+      if (UnityEditor.PrefabUtility.IsPartOfAnyPrefab(this)) return;
+      ApplyColor(color);
+      ApplyLineWidth(lineWidth);
     }
 #endif
 
-    public void SetColor(Color color)
+    public void SetColor(Color col)
     {
-      _color = color;
-      ApplyColor(_color);
+      color = col;
+      ApplyColor(color);
     }
 
-    public void SetLineWidth(float lineWidth)
+    public void SetLineWidth(float width)
     {
-      _lineWidth = lineWidth;
-      ApplyLineWidth(_lineWidth);
+      lineWidth = width;
+      ApplyLineWidth(lineWidth);
     }
 
     public void Draw(Vector3[] positions)
     {
-      _lineRenderer.SetPositions(positions ?? _EmptyPositions);
+      lineRenderer.SetPositions(positions ?? _EmptyPositions);
     }
 
     public void Draw(Rect target, Vector2Int imageSize)
@@ -79,28 +78,26 @@ namespace Mediapipe.Unity
       }
     }
 
-    public void Draw(LocationData target, Vector2Int imageSize)
+    public void Draw(LocationData target, int2 imageSize)
     {
-      if (ActivateFor(target))
+      if (!ActivateFor(target)) return;
+      switch (target.Format)
       {
-        switch (target.Format)
+        case mplt.Format.BoundingBox:
         {
-          case mplt.Format.BoundingBox:
-            {
-              Draw(GetScreenRect().GetRectVertices(target.BoundingBox, imageSize, rotationAngle, isMirrored));
-              break;
-            }
-          case mplt.Format.RelativeBoundingBox:
-            {
-              Draw(GetScreenRect().GetRectVertices(target.RelativeBoundingBox, rotationAngle, isMirrored));
-              break;
-            }
-          case mplt.Format.Global:
-          case mplt.Format.Mask:
-          default:
-            {
-              throw new System.ArgumentException($"The format of the LocationData must be BoundingBox or RelativeBoundingBox, but {target.Format}");
-            }
+          Draw(GetScreenRect().GetRectVertices(target.BoundingBox, imageSize, rotationAngle, isMirrored));
+          break;
+        }
+        case mplt.Format.RelativeBoundingBox:
+        {
+          Draw(GetScreenRect().GetRectVertices(target.RelativeBoundingBox, rotationAngle, isMirrored));
+          break;
+        }
+        case mplt.Format.Global:
+        case mplt.Format.Mask:
+        default:
+        {
+          throw new System.ArgumentException($"The format of the LocationData must be BoundingBox or RelativeBoundingBox, but {target.Format}");
         }
       }
     }
@@ -127,22 +124,18 @@ namespace Mediapipe.Unity
       }
     }
 
-    private void ApplyColor(Color color)
+    private void ApplyColor(Color col)
     {
-      if (_lineRenderer != null)
-      {
-        _lineRenderer.startColor = color;
-        _lineRenderer.endColor = color;
-      }
+      if (lineRenderer is null) return;
+      lineRenderer.startColor = col;
+      lineRenderer.endColor = col;
     }
 
-    private void ApplyLineWidth(float lineWidth)
+    private void ApplyLineWidth(float width)
     {
-      if (_lineRenderer != null)
-      {
-        _lineRenderer.startWidth = lineWidth;
-        _lineRenderer.endWidth = lineWidth;
-      }
+      if (lineRenderer is null) return;
+      lineRenderer.startWidth = width;
+      lineRenderer.endWidth = width;
     }
   }
 }

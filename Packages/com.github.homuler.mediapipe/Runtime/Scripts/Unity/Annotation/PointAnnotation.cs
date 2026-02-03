@@ -5,6 +5,7 @@
 // https://opensource.org/licenses/MIT.
 
 using Mediapipe.Unity.CoordinateSystem;
+using Unity.Mathematics;
 using UnityEngine;
 
 using mplt = Mediapipe.LocationData.Types;
@@ -18,13 +19,13 @@ namespace Mediapipe.Unity
 
   public class PointAnnotation : HierarchicalAnnotation
   {
-    [SerializeField] private Color _color = Color.green;
-    [SerializeField] private float _radius = 15.0f;
+    [SerializeField] private Color color = Color.green;
+    [SerializeField] private float radius = 15.0f;
 
     private void OnEnable()
     {
-      ApplyColor(_color);
-      ApplyRadius(_radius);
+      ApplyColor(color);
+      ApplyRadius(radius);
     }
 
     private void OnDisable()
@@ -32,95 +33,81 @@ namespace Mediapipe.Unity
       ApplyRadius(0.0f);
     }
 
-    public void SetColor(Color color)
+    public void SetColor(Color col)
     {
-      _color = color;
-      ApplyColor(_color);
+      color = col;
+      ApplyColor(color);
     }
 
-    public void SetRadius(float radius)
+    public void SetRadius(float radi)
     {
-      _radius = radius;
-      ApplyRadius(_radius);
+      radius = radi;
+      ApplyRadius(radius);
     }
 
-    public void Draw(Vector3 position)
+    public void Draw(float3 position)
     {
       SetActive(true); // Vector3 is not nullable
       transform.localPosition = position;
     }
 
-    public void Draw(Landmark target, Vector3 scale, bool visualizeZ = true)
+    public void Draw(Landmark target, float3 scale, bool visualizeZ = true)
     {
-      if (ActivateFor(target))
+      if (!ActivateFor(target)) return;
+      var position = GetScreenRect().GetPoint(target, scale, rotationAngle, isMirrored);
+      if (!visualizeZ)
       {
-        var position = GetScreenRect().GetPoint(target, scale, rotationAngle, isMirrored);
-        if (!visualizeZ)
-        {
-          position.z = 0.0f;
-        }
-        transform.localPosition = position;
+        position.z = 0.0f;
       }
+      transform.localPosition = position;
     }
 
     public void Draw(NormalizedLandmark target, bool visualizeZ = true)
     {
-      if (ActivateFor(target))
+      if (!ActivateFor(target)) return;
+      var position = GetScreenRect().GetPoint(target, rotationAngle, isMirrored);
+      if (!visualizeZ)
       {
-        var position = GetScreenRect().GetPoint(target, rotationAngle, isMirrored);
-        if (!visualizeZ)
-        {
-          position.z = 0.0f;
-        }
-        transform.localPosition = position;
+        position.z = 0.0f;
       }
+      transform.localPosition = position;
     }
 
     public void Draw(in mptcc.NormalizedLandmark target, bool visualizeZ = true)
     {
-      if (ActivateFor(target))
+      if (!ActivateFor(target)) return;
+      var position = GetScreenRect().GetPoint(in target, rotationAngle, isMirrored);
+      if (!visualizeZ)
       {
-        var position = GetScreenRect().GetPoint(in target, rotationAngle, isMirrored);
-        if (!visualizeZ)
-        {
-          position.z = 0.0f;
-        }
-        transform.localPosition = position;
+        position.z = 0.0f;
       }
+      transform.localPosition = position;
     }
 
     public void Draw(mplt.RelativeKeypoint target, float threshold = 0.0f)
     {
-      if (ActivateFor(target))
-      {
-        Draw(GetScreenRect().GetPoint(target, rotationAngle, isMirrored));
-        SetColor(GetColor(target.Score, threshold));
-      }
+      if (!ActivateFor(target)) return;
+      var value = GetScreenRect().GetPoint(target, rotationAngle, isMirrored);
+      Draw(new float3(value.x, value.y, 0.0f));
+      SetColor(GetColor(target.Score, threshold));
     }
 
     public void Draw(mptcc.NormalizedKeypoint target, float threshold = 0.0f)
     {
-      if (ActivateFor(target))
-      {
-        Draw(GetScreenRect().GetPoint(target, rotationAngle, isMirrored));
-        SetColor(GetColor(target.score ?? 1.0f, threshold));
-      }
+      if (!ActivateFor(target)) return;
+      var value = GetScreenRect().GetPoint(target, rotationAngle, isMirrored);
+      Draw(new float3(value.x, value.y, 0.0f));
+      SetColor(GetColor(target.score ?? 1.0f, threshold));
     }
 
-    private void ApplyColor(Color color)
-    {
-      GetComponent<Renderer>().material.color = color;
-    }
+    private void ApplyColor(Color col) => GetComponent<Renderer>().material.color = col;
 
-    private void ApplyRadius(float radius)
-    {
-      transform.localScale = radius * Vector3.one;
-    }
+    private void ApplyRadius(float radi) => transform.localScale = radi * Vector3.one;
 
     private Color GetColor(float score, float threshold)
     {
       var t = (score - threshold) / (1 - threshold);
-      var h = Mathf.Lerp(90, 0, t) / 360; // from yellow-green to red
+      var h = math.lerp(90, 0, t) / 360; // from yellow-green to red
       return Color.HSVToRGB(h, 1, 1);
     }
   }

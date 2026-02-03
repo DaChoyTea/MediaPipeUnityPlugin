@@ -33,15 +33,9 @@ namespace Mediapipe.Unity
       protected set => _root = value;
     }
 
-    public RectTransform GetAnnotationLayer()
-    {
-      return root.transform.parent.gameObject.GetComponent<RectTransform>();
-    }
+    public RectTransform GetAnnotationLayer() => root.transform.parent.gameObject.GetComponent<RectTransform>();
 
-    public UnityEngine.Rect GetScreenRect()
-    {
-      return GetAnnotationLayer().rect;
-    }
+    public UnityEngine.Rect GetScreenRect() => GetAnnotationLayer().rect;
 
     public bool isActive => gameObject.activeSelf;
     public bool isActiveInHierarchy => gameObject.activeInHierarchy;
@@ -89,10 +83,10 @@ namespace Mediapipe.Unity
     protected TAnnotation InstantiateChild<TAnnotation>(string name = "Game Object") 
       where TAnnotation : HierarchicalAnnotation
     {
-      var gameObject = new GameObject(name);
-      gameObject.transform.SetParent(transform);
+      var gameOb = new GameObject(name);
+      gameOb.transform.SetParent(transform);
 
-      return gameObject.AddComponent<TAnnotation>();
+      return gameOb.AddComponent<TAnnotation>();
     }
   }
 }

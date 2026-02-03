@@ -4,6 +4,7 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Mediapipe.Unity
@@ -21,7 +22,8 @@ namespace Mediapipe.Unity
   ///   Note that this class can be accessed from a thread other than main thread.
   ///   Extended classes must be implemented to work in such a situation, since Unity APIs won't work in other threads.
   /// </remarks>
-  public abstract class AnnotationController<T> : MonoBehaviour where T : HierarchicalAnnotation
+  public abstract class AnnotationController<T> : MonoBehaviour 
+    where T : HierarchicalAnnotation
   {
     [SerializeField] protected T annotation;
     protected bool isStale = false;
@@ -50,7 +52,7 @@ namespace Mediapipe.Unity
       }
     }
 
-    public Vector2Int imageSize { get; set; }
+    public int2 imageSize { get; set; }
 
     protected virtual void Start()
     {

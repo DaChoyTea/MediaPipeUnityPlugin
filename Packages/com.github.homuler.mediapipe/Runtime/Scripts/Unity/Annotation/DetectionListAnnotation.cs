@@ -5,6 +5,7 @@
 // https://opensource.org/licenses/MIT.
 
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 using mptcc = Mediapipe.Tasks.Components.Containers;
@@ -44,7 +45,7 @@ namespace Mediapipe.Unity
     ///   This will affect the rectangle's color. For example, if the score is below the threshold, the rectangle will be transparent.
     ///   The default value is 0.
     /// </param>
-    public void Draw(IReadOnlyList<mptcc.Detection> targets, Vector2Int imageSize, float threshold = 0.0f)
+    public void Draw(IReadOnlyList<mptcc.Detection> targets, int2 imageSize, float threshold = 0.0f)
     {
       if (ActivateFor(targets))
       {
@@ -60,10 +61,7 @@ namespace Mediapipe.Unity
     ///   This will affect the rectangle's color. For example, if the score is below the threshold, the rectangle will be transparent.
     ///   The default value is 0.
     /// </param>
-    public void Draw(mptcc.DetectionResult target, Vector2Int imageSize, float threshold = 0.0f)
-    {
-      Draw(target.detections, imageSize, threshold);
-    }
+    public void Draw(mptcc.DetectionResult target, int2 imageSize, float threshold = 0.0f) => Draw(target.detections, imageSize, threshold);
 
     /// <param name="threshold">
     ///   Score threshold. This value must be between 0 and 1.

@@ -5,11 +5,13 @@
 // https://opensource.org/licenses/MIT.
 
 using System.Collections;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Mediapipe.Unity.Sample
 {
-  public abstract class VisionTaskApiRunner<TTask> : BaseRunner where TTask : Tasks.Vision.Core.BaseVisionTaskApi
+  public abstract class VisionTaskApiRunner<TTask> : BaseRunner 
+    where TTask : Tasks.Vision.Core.BaseVisionTaskApi
   {
     [SerializeField] protected Screen screen;
 
@@ -54,7 +56,7 @@ namespace Mediapipe.Unity.Sample
     protected static void SetupAnnotationController<T>(AnnotationController<T> annotationController, ImageSource imageSource, bool expectedToBeMirrored = false) where T : HierarchicalAnnotation
     {
       annotationController.isMirrored = expectedToBeMirrored;
-      annotationController.imageSize = new Vector2Int(imageSource.textureWidth, imageSource.textureHeight);
+      annotationController.imageSize = new int2(imageSource.textureWidth, imageSource.textureHeight);
     }
   }
 }
