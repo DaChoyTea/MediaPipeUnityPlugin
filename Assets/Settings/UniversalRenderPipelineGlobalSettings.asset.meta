@@ -6,3 +6,10 @@ NativeFormatImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309340
+  packageName: DOTS Survivors - Complete ECS Game Project & Instructional Documentation
+  packageVersion: 1.1.2
+  assetPath: Assets/Settings/UniversalRenderPipelineGlobalSettings.asset
+  uploadId: 782044

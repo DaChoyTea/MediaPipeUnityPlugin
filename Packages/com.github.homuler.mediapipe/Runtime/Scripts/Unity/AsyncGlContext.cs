@@ -13,7 +13,7 @@ namespace Mediapipe.Unity
 {
   public static class AsyncGlContext
   {
-    public static AsyncGlContextRequest Request(Action<AsyncGlContextRequest> callback) => new AsyncGlContextRequest(callback);
+    public static AsyncGlContextRequest Request(Action<AsyncGlContextRequest> callback) => new(callback);
   }
 
   public class AsyncGlContextRequest

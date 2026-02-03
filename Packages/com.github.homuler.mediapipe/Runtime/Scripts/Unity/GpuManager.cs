@@ -13,7 +13,7 @@ namespace Mediapipe.Unity
 {
   public static class GpuManager
   {
-    private const string _TAG = nameof(GpuManager);
+    private const string _Tag = nameof(GpuManager);
 
     private delegate void PluginCallback(int eventId);
 
@@ -39,7 +39,7 @@ namespace Mediapipe.Unity
       {
         if (IsInitialized)
         {
-          Logger.LogInfo(_TAG, "Already initialized");
+          Logger.LogInfo(_Tag, "Already initialized");
           yield break;
         }
 
@@ -66,7 +66,7 @@ namespace Mediapipe.Unity
         catch (EntryPointNotFoundException e)
         {
           Logger.LogException(e);
-          Logger.LogError(_TAG, "Failed to create GpuResources. Did you build libraries with GPU enabled?");
+          Logger.LogError(_Tag, "Failed to create GpuResources. Did you build libraries with GPU enabled?");
         }
         catch (Exception e)
         {
@@ -117,10 +117,10 @@ namespace Mediapipe.Unity
     {
       if (request.platformGlContext == IntPtr.Zero)
       {
-        Logger.LogWarning(_TAG, "EGL context is not found, so MediaPipe won't share their EGL contexts with Unity");
+        Logger.LogWarning(_Tag, "EGL context is not found, so MediaPipe won't share their EGL contexts with Unity");
         return;
       }
-      Logger.LogVerbose(_TAG, $"EGL context is found: {request.platformGlContext}");
+      Logger.LogVerbose(_Tag, $"EGL context is found: {request.platformGlContext}");
 
       _PlatformGlContext = request.platformGlContext;
     }
