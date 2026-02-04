@@ -4,15 +4,16 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Mediapipe.Unity
 {
 #pragma warning disable IDE0065
 	using Color = UnityEngine.Color;
-
 #pragma warning restore IDE0065
 
+	[RequireComponent(typeof(LineRenderer))]
 	public class LineAnnotation : HierarchicalAnnotation
 	{
 		[SerializeField] private LineRenderer lineRenderer;
@@ -21,6 +22,7 @@ namespace Mediapipe.Unity
 
 		private void OnEnable()
 		{
+			lineRenderer = GetComponent<LineRenderer>();
 			ApplyColor(color);
 			ApplyLineWidth(lineWidth);
 		}
@@ -33,11 +35,9 @@ namespace Mediapipe.Unity
 #if UNITY_EDITOR
 		private void OnValidate()
 		{
-			if (!UnityEditor.PrefabUtility.IsPartOfAnyPrefab(this))
-			{
-				ApplyColor(color);
-				ApplyLineWidth(lineWidth);
-			}
+			if (UnityEditor.PrefabUtility.IsPartOfAnyPrefab(this)) return;
+			ApplyColor(color);
+			ApplyLineWidth(lineWidth);
 		}
 #endif
 
@@ -53,7 +53,7 @@ namespace Mediapipe.Unity
 			ApplyLineWidth(lineWidth);
 		}
 
-		public void Draw(Vector3 a, Vector3 b)
+		public void Draw(float3 a, float3 b)
 		{
 			lineRenderer.SetPositions(new Vector3[] { a, b });
 		}
@@ -65,16 +65,12 @@ namespace Mediapipe.Unity
 
 		public void ApplyColor(Color col)
 		{
-			if (lineRenderer is null) return;
-			lineRenderer.startColor = col;
-			lineRenderer.endColor = col;
+			lineRenderer.startColor = lineRenderer.endColor = col;
 		}
 
 		private void ApplyLineWidth(float width)
 		{
-			if (lineRenderer is null) return;
-			lineRenderer.startWidth = width;
-			lineRenderer.endWidth = width;
+			lineRenderer.startWidth = lineRenderer.endWidth = width;
 		}
 	}
 }

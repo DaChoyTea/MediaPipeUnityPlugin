@@ -4,6 +4,7 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+using System;
 using UnityEngine;
 
 namespace Mediapipe.Unity
@@ -12,41 +13,47 @@ namespace Mediapipe.Unity
 	{
 		IHierachicalAnnotation root { get; }
 		Transform transform { get; }
-		RectTransform GetAnnotationLayer();
 		UnityEngine.Rect GetScreenRect();
 	}
 
 	public abstract class HierarchicalAnnotation : MonoBehaviour, IHierachicalAnnotation
 	{
 		private IHierachicalAnnotation _root;
+		private RectTransform _cachedScreenRectTransform;
 
 		public IHierachicalAnnotation root
 		{
 			get
 			{
-				if (_root == null)
-				{
-					var parentObj = transform.parent?.gameObject;
-					_root = (parentObj != null && parentObj.TryGetComponent<IHierachicalAnnotation>(out var parent))
-						? parent.root
-						: this;
-				}
+				if (_root != null) return _root;
+				var parentObj = transform.parent?.gameObject;
+				if (parentObj is null) return this;
+				_root = parentObj.TryGetComponent<IHierachicalAnnotation>(out var parent)
+					? parent.root : this;
 
 				return _root;
 			}
 			protected set => _root = value;
 		}
 
-		public RectTransform GetAnnotationLayer() => root.transform.parent.gameObject.GetComponent<RectTransform>();
+		private RectTransform ResolveScreenRectTransform()
+		{
+			if (_cachedScreenRectTransform is not null) return _cachedScreenRectTransform;
+			var parent = root.transform.parent;
+			_cachedScreenRectTransform = parent as RectTransform;
 
-		public UnityEngine.Rect GetScreenRect() => GetAnnotationLayer().rect;
+			return _cachedScreenRectTransform;
+		}
 
-		public bool isActive => gameObject.activeSelf;
+		public UnityEngine.Rect GetScreenRect() => ResolveScreenRectTransform()?.rect ?? default;
+
+		// activeSelf only take accounts for the object itself is active or not
+		// activeInHierarchy include whether the object's parent is also active or not
 		public bool isActiveInHierarchy => gameObject.activeInHierarchy;
 
 		public void SetActive(bool active)
 		{
-			if (isActive != active)
+			if (gameObject.activeSelf != active)
 			{
 				gameObject.SetActive(active);
 			}
@@ -79,16 +86,16 @@ namespace Mediapipe.Unity
 		protected TH InstantiateChild<TH>(GameObject prefab)
 			where TH : HierarchicalAnnotation
 		{
-			var annotation = Instantiate(prefab, transform).GetComponent<TH>();
+			Instantiate(prefab, transform).TryGetComponent<TH>(out var annotation);
 			annotation.isMirrored = isMirrored;
 			annotation.rotationAngle = rotationAngle;
 			return annotation;
 		}
 
-		protected TH InstantiateChild<TH>(string name = "Game Object")
+		protected TH InstantiateChild<TH>(string obName = "Game Object")
 			where TH : HierarchicalAnnotation
 		{
-			var gameOb = new GameObject(name);
+			var gameOb = new GameObject(obName);
 			gameOb.transform.SetParent(transform);
 
 			return gameOb.AddComponent<TH>();

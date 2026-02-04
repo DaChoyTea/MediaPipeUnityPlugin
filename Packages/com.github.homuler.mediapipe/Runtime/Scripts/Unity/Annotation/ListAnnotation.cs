@@ -22,11 +22,7 @@ namespace Mediapipe.Unity
 		{
 			get
 			{
-				if (_children == null)
-				{
-					_children = new List<T>();
-				}
-
+				_children ??= new List<T>();
 				return _children;
 			}
 		}

@@ -21,9 +21,12 @@ namespace Mediapipe.Unity
 	{
 		[SerializeField] private Color color = Color.green;
 		[SerializeField] private float radius = 15.0f;
+		
+		private Renderer _renderer;
 
 		private void OnEnable()
 		{
+			_renderer = GetComponent<Renderer>();
 			ApplyColor(color);
 			ApplyRadius(radius);
 		}
@@ -47,7 +50,7 @@ namespace Mediapipe.Unity
 
 		public void Draw(float3 position)
 		{
-			SetActive(true); // Vector3 is not nullable
+			SetActive(true);
 			transform.localPosition = position;
 		}
 
@@ -103,7 +106,7 @@ namespace Mediapipe.Unity
 			SetColor(GetColor(target.score ?? 1.0f, threshold));
 		}
 
-		private void ApplyColor(Color col) => GetComponent<Renderer>().material.color = col;
+		private void ApplyColor(Color col) => _renderer.material.color = col;
 
 		private void ApplyRadius(float radi) => transform.localScale = radi * Vector3.one;
 

@@ -17,10 +17,10 @@ namespace Mediapipe.Unity
 
 	public sealed class HandLandmarkListAnnotation : HierarchicalAnnotation
 	{
-		[SerializeField] private PointListAnnotation _landmarkListAnnotation;
-		[SerializeField] private ConnectionListAnnotation _connectionListAnnotation;
-		[SerializeField] private Color _leftLandmarkColor = Color.green;
-		[SerializeField] private Color _rightLandmarkColor = Color.green;
+		[SerializeField] private PointListAnnotation landmarkListAnnotation;
+		[SerializeField] private ConnectionListAnnotation connectionListAnnotation;
+		[SerializeField] private Color leftLandmarkColor = Color.green;
+		[SerializeField] private Color rightLandmarkColor = Color.green;
 
 		public enum Hand : byte
 		{
@@ -28,7 +28,7 @@ namespace Mediapipe.Unity
 			Right,
 		}
 
-		private const int _LandmarkCount = 21;
+		private const int LandmarkCount = 21;
 
 		private readonly List<(int, int)> _connections = new List<(int, int)>
 		{
@@ -59,8 +59,8 @@ namespace Mediapipe.Unity
 		{
 			set
 			{
-				_landmarkListAnnotation.isMirrored = value;
-				_connectionListAnnotation.isMirrored = value;
+				landmarkListAnnotation.isMirrored = value;
+				connectionListAnnotation.isMirrored = value;
 				base.isMirrored = value;
 			}
 		}
@@ -69,54 +69,49 @@ namespace Mediapipe.Unity
 		{
 			set
 			{
-				_landmarkListAnnotation.rotationAngle = value;
-				_connectionListAnnotation.rotationAngle = value;
+				landmarkListAnnotation.rotationAngle = value;
+				connectionListAnnotation.rotationAngle = value;
 				base.rotationAngle = value;
 			}
 		}
 
-		public PointAnnotation this[int index] => _landmarkListAnnotation[index];
+		public PointAnnotation this[int index] => landmarkListAnnotation[index];
 
 		private void Start()
 		{
-			_landmarkListAnnotation.Fill(_LandmarkCount);
-			_connectionListAnnotation.Fill(_connections, _landmarkListAnnotation);
+			landmarkListAnnotation.Fill(LandmarkCount);
+			connectionListAnnotation.Fill(_connections, landmarkListAnnotation);
 		}
 
-		public void SetLeftLandmarkColor(Color leftLandmarkColor)
-		{
-			_leftLandmarkColor = leftLandmarkColor;
-		}
+		public void SetLeftLandmarkColor(Color leftColor) => leftLandmarkColor = leftColor;
 
-		public void SetRightLandmarkColor(Color rightLandmarkColor)
-		{
-			_rightLandmarkColor = rightLandmarkColor;
-		}
+		public void SetRightLandmarkColor(Color rightColor) => rightLandmarkColor = rightColor;
 
 		public void SetLandmarkRadius(float landmarkRadius)
 		{
-			_landmarkListAnnotation.SetRadius(landmarkRadius);
+			landmarkListAnnotation.SetRadius(landmarkRadius);
 		}
 
 		public void SetConnectionColor(Color connectionColor)
 		{
-			_connectionListAnnotation.SetColor(connectionColor);
+			connectionListAnnotation.SetColor(connectionColor);
 		}
 
 		public void SetConnectionWidth(float connectionWidth)
 		{
-			_connectionListAnnotation.SetLineWidth(connectionWidth);
+			connectionListAnnotation.SetLineWidth(connectionWidth);
 		}
 
 		public void SetHandedness(Hand handedness)
 		{
-			if (handedness == Hand.Left)
+			switch (handedness)
 			{
-				_landmarkListAnnotation.SetColor(_leftLandmarkColor);
-			}
-			else if (handedness == Hand.Right)
-			{
-				_landmarkListAnnotation.SetColor(_rightLandmarkColor);
+				case Hand.Left:
+					landmarkListAnnotation.SetColor(leftLandmarkColor);
+					break;
+				case Hand.Right:
+					landmarkListAnnotation.SetColor(rightLandmarkColor);
+					break;
 			}
 		}
 
@@ -159,9 +154,9 @@ namespace Mediapipe.Unity
 		public void Draw(IReadOnlyList<NormalizedLandmark> target, bool visualizeZ = false)
 		{
 			if (!ActivateFor(target)) return;
-			_landmarkListAnnotation.Draw(target, visualizeZ);
+			landmarkListAnnotation.Draw(target, visualizeZ);
 			// Draw explicitly because connection annotation's targets remain the same.
-			_connectionListAnnotation.Redraw();
+			connectionListAnnotation.Redraw();
 		}
 
 		public void Draw(NormalizedLandmarkList target, bool visualizeZ = false)
@@ -172,9 +167,9 @@ namespace Mediapipe.Unity
 		public void Draw(IReadOnlyList<mptcc.NormalizedLandmark> target, bool visualizeZ = false)
 		{
 			if (!ActivateFor(target)) return;
-			_landmarkListAnnotation.Draw(target, visualizeZ);
+			landmarkListAnnotation.Draw(target, visualizeZ);
 			// Draw explicitly because connection annotation's targets remain the same.
-			_connectionListAnnotation.Redraw();
+			connectionListAnnotation.Redraw();
 		}
 
 		public void Draw(mptcc.NormalizedLandmarks target, bool visualizeZ = false)

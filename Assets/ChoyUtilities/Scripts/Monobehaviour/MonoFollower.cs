@@ -9,7 +9,7 @@ namespace EugeneC.Mono
 	{
 		[SerializeField] private Transform target;
 		[SerializeField] private float3 offset;
-		[SerializeField] [Range(0f, 30f)] private float smoothFollowSpeed;
+		[SerializeField, Range(0f, 30f)] private float smoothFollowSpeed;
 
 		private float _factor;
 

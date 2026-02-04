@@ -18,43 +18,35 @@ namespace Mediapipe.Unity
 
 	public class PointListAnnotation : ListAnnotation<PointAnnotation>
 	{
-		[SerializeField] private Color _color = Color.green;
-		[SerializeField] private float _radius = 15.0f;
+		[SerializeField] private Color color = Color.green;
+		[SerializeField] private float radius = 15.0f;
 
 #if UNITY_EDITOR
 		private void OnValidate()
 		{
-			if (!UnityEditor.PrefabUtility.IsPartOfAnyPrefab(this))
-			{
-				ApplyColor(_color);
-				ApplyRadius(_radius);
-			}
+			if (UnityEditor.PrefabUtility.IsPartOfAnyPrefab(this)) return;
+			ApplyColor(color);
+			ApplyRadius(radius);
 		}
 #endif
 
-		public void SetColor(Color color)
+		public void SetColor(Color col)
 		{
-			_color = color;
-			ApplyColor(_color);
+			color = col;
+			ApplyColor(color);
 		}
 
-		public void SetRadius(float radius)
+		public void SetRadius(float radi)
 		{
-			_radius = radius;
-			ApplyRadius(_radius);
+			radius = radi;
+			ApplyRadius(radius);
 		}
 
 		public void Draw(IReadOnlyList<Vector3> targets)
 		{
 			if (ActivateFor(targets))
 			{
-				CallActionForAll(targets, (annotation, target) =>
-				{
-					if (annotation != null)
-					{
-						annotation.Draw(target);
-					}
-				});
+				CallActionForAll(targets, (annotation, target) => annotation?.Draw(target));
 			}
 		}
 
@@ -62,13 +54,7 @@ namespace Mediapipe.Unity
 		{
 			if (ActivateFor(targets))
 			{
-				CallActionForAll(targets, (annotation, target) =>
-				{
-					if (annotation != null)
-					{
-						annotation.Draw(target, scale, visualizeZ);
-					}
-				});
+				CallActionForAll(targets, (annotation, target) => annotation?.Draw(target, scale, visualizeZ));
 			}
 		}
 
@@ -81,13 +67,7 @@ namespace Mediapipe.Unity
 		{
 			if (ActivateFor(targets))
 			{
-				CallActionForAll(targets, (annotation, target) =>
-				{
-					if (annotation != null)
-					{
-						annotation.Draw(target, visualizeZ);
-					}
-				});
+				CallActionForAll(targets, (annotation, target) => annotation?.Draw(target, visualizeZ));
 			}
 		}
 
@@ -100,30 +80,17 @@ namespace Mediapipe.Unity
 		{
 			if (ActivateFor(targets))
 			{
-				CallActionForAll(targets, (annotation, target) =>
-				{
-					if (annotation != null)
-					{
-						annotation.Draw(in target, visualizeZ);
-					}
-				});
+				CallActionForAll(targets, (annotation, target) => annotation?.Draw(in target, visualizeZ));
 			}
 		}
 
-		public void Draw(mptcc.NormalizedLandmarks targets, bool visualizeZ = true) =>
-			Draw(targets.landmarks, visualizeZ);
+		public void Draw(mptcc.NormalizedLandmarks targets, bool visualizeZ = true) => Draw(targets.landmarks, visualizeZ);
 
 		public void Draw(IReadOnlyList<mplt.RelativeKeypoint> targets, float threshold = 0.0f)
 		{
 			if (ActivateFor(targets))
 			{
-				CallActionForAll(targets, (annotation, target) =>
-				{
-					if (annotation != null)
-					{
-						annotation.Draw(target, threshold);
-					}
-				});
+				CallActionForAll(targets, (annotation, target) => annotation.Draw(target, threshold));
 			}
 		}
 
@@ -131,43 +98,31 @@ namespace Mediapipe.Unity
 		{
 			if (ActivateFor(targets))
 			{
-				CallActionForAll(targets, (annotation, target) =>
-				{
-					if (annotation != null)
-					{
-						annotation.Draw(target, threshold);
-					}
-				});
+				CallActionForAll(targets, (annotation, target) => annotation?.Draw(target, threshold));
 			}
 		}
 
 		protected override PointAnnotation InstantiateChild(bool isActive = true)
 		{
 			var annotation = base.InstantiateChild(isActive);
-			annotation.SetColor(_color);
-			annotation.SetRadius(_radius);
+			annotation.SetColor(color);
+			annotation.SetRadius(radius);
 			return annotation;
 		}
 
-		private void ApplyColor(Color color)
+		private void ApplyColor(Color col)
 		{
 			foreach (var point in children)
 			{
-				if (point != null)
-				{
-					point.SetColor(color);
-				}
+				point?.SetColor(col);
 			}
 		}
 
-		private void ApplyRadius(float radius)
+		private void ApplyRadius(float radi)
 		{
 			foreach (var point in children)
 			{
-				if (point != null)
-				{
-					point.SetRadius(radius);
-				}
+				point?.SetRadius(radi);
 			}
 		}
 	}
