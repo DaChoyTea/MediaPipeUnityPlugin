@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Mediapipe.Tasks.Components.Containers;
 using Mediapipe.Unity;
 using Unity.Entities;
-using Unity.Mathematics;
 
 namespace ProjectionMapping
 {
@@ -54,9 +53,7 @@ namespace ProjectionMapping
 			    {
 				    EManager.SetComponentData(c.Entity, new HandPointIData
 				    {
-					    ID = c.id,
 					    Hand = Hand.None,
-					    IsTracked = c.isTracked
 				    });
 			    }
 		    }

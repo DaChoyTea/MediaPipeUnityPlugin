@@ -11,7 +11,7 @@ namespace ProjectionMapping
 		    public override void Bake(HandTrackSingletonAuthoring singletonAuthoring)
 		    {
 			    var e = GetEntity(TransformUsageFlags.None);
-			    AddComponent(e, new HandTrackingISingleton());
+			    AddComponent<HandTrackingISingleton>(e);
 		    }
 	    }
     }

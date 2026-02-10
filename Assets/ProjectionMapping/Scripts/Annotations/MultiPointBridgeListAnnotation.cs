@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using EugeneC.ECS;
 using Mediapipe.Tasks.Components.Containers;
 using Mediapipe.Unity;
 using Unity.Entities;

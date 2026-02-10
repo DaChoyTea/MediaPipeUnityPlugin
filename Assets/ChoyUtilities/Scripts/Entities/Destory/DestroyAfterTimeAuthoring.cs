@@ -1,9 +1,8 @@
-using EugeneC.ECS;
 using Unity.Burst;
 using Unity.Entities;
 using UnityEngine;
 
-namespace EugeneC.Utilities
+namespace EugeneC.ECS
 {
 	[RequireComponent(typeof(DestroyAuthoring))]
 	[DisallowMultipleComponent]
