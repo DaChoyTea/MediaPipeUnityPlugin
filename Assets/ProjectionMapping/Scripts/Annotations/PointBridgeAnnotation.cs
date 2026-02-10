@@ -15,7 +15,7 @@ namespace ProjectionMapping
 	    public EntityManager EManager;
 	    public EntityArchetype EntityArchetype;
 	    
-	    public Hand hand;
+	    public EHand eHand;
 	    public byte id;
 	    public bool isTracked;
 	    public Entity Entity;
@@ -36,7 +36,7 @@ namespace ProjectionMapping
 		    EManager.SetComponentData(Entity, new HandPointIData
 		    {
 			    ID = id,
-			    Hand = hand,
+			    EHand = eHand,
 			    IsTracked = isTracked
 		    });
 	    }

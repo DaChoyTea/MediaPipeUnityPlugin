@@ -16,7 +16,7 @@ namespace Mediapipe.Unity
 
 #pragma warning restore IDE0065
 	
-	public enum Hand : byte
+	public enum EHand : byte
 	{
 		Left,
 		Right,
@@ -60,8 +60,8 @@ namespace Mediapipe.Unity
 		[SerializeField] private Color leftLandmarkColor = Color.green;
 		[SerializeField] private Color rightLandmarkColor = Color.green;
 
-		public Hand handedness = Hand.None;
-		public Action<Hand, float> OnFingerDistanceChanged;
+		public EHand handedness = EHand.None;
+		public Action<EHand, float> OnFingerDistanceChanged;
 
 		public override bool isMirrored
 		{
@@ -113,16 +113,16 @@ namespace Mediapipe.Unity
 		}
 
 		// For some reason, left & right results are inverted
-		public void SetHandedness(Hand handed)
+		public void SetHandedness(EHand handed)
 		{
 			switch (handed)
 			{
-				case Hand.Left:
-					handedness = Hand.Right;
+				case EHand.Left:
+					handedness = EHand.Right;
 					pointListAnnotation.SetColor(rightLandmarkColor);
 					break;
-				case Hand.Right:
-					handedness = Hand.Left;
+				case EHand.Right:
+					handedness = EHand.Left;
 					pointListAnnotation.SetColor(leftLandmarkColor);
 					break;
 			}
@@ -132,11 +132,11 @@ namespace Mediapipe.Unity
 		{
 			if (handedness == null || handedness.Count == 0 || handedness[0].Label == "Left")
 			{
-				SetHandedness(Hand.Left);
+				SetHandedness(EHand.Left);
 			}
 			else if (handedness[0].Label == "Right")
 			{
-				SetHandedness(Hand.Right);
+				SetHandedness(EHand.Right);
 			}
 			// ignore unknown label
 		}
@@ -150,11 +150,11 @@ namespace Mediapipe.Unity
 		{
 			if (handedness == null || handedness.Count == 0 || handedness[0].categoryName == "Left")
 			{
-				SetHandedness(Hand.Left);
+				SetHandedness(EHand.Left);
 			}
 			else if (handedness[0].categoryName == "Right")
 			{
-				SetHandedness(Hand.Right);
+				SetHandedness(EHand.Right);
 			}
 			// ignore unknown label
 		}

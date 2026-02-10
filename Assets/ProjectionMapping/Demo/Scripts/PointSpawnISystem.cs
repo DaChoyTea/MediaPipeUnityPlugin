@@ -29,7 +29,7 @@ namespace ProjectionMapping
 	                 in SystemAPI.Query<RefRW<PointSpawnIData>, RefRO<HandPointIData>, RefRO<LocalTransform>>()
 		                 .WithEntityAccess())
 	        {
-		        if(hand.ValueRO.Hand == Hand.None) continue;
+		        if(hand.ValueRO.EHand == EHand.None) continue;
 		        point.ValueRW.CurrentTime += dt;
 		        if(point.ValueRO.CurrentTime <= 1 / spawn.Frequency) continue;
 		        

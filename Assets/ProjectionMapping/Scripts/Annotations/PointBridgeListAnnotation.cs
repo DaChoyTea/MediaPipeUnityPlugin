@@ -31,15 +31,15 @@ namespace ProjectionMapping
 		    {
 			    if (handedness == null || handedness.Count == 0)
 			    {
-					c.hand = Hand.None;
+					c.eHand = EHand.None;
 			    }
 			    else
-				    c.hand = handedness[0].categoryName switch
+				    c.eHand = handedness[0].categoryName switch
 				    {
 					    // dk why its always inverted
-					    "Right" => Hand.Left,
-					    "Left" => Hand.Right,
-					    _ => c.hand
+					    "Right" => EHand.Left,
+					    "Left" => EHand.Right,
+					    _ => c.eHand
 				    };
 			    // ignore unknown label
 		    }
@@ -53,7 +53,7 @@ namespace ProjectionMapping
 			    {
 				    EManager.SetComponentData(c.Entity, new HandPointIData
 				    {
-					    Hand = Hand.None,
+					    EHand = EHand.None,
 				    });
 			    }
 		    }

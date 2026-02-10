@@ -300,7 +300,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47a65ec75124433ba95806051e66e5e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  voxelSize: 0.4
+  voxelSize: 0.5
   voxelLife: 0.3
   colorFrequency: 0.5
   colorSpeed: 0.5

@@ -58,20 +58,20 @@ namespace ProjectionMapping
 		    foreach (var (point, lt, entity) 
 		             in SystemAPI.Query<RefRO<HandPointIData>, RefRO<LocalTransform>>().WithEntityAccess())
 		    {
-			    if (point.ValueRO.Hand == Hand.None) continue;
+			    if (point.ValueRO.EHand == EHand.None) continue;
 			    if (!point.ValueRO.IsTracked) continue;
 			    
 			    var pos = lt.ValueRO.Position;
 			    var id = point.ValueRO.ID;
 			    if (id >= 21) continue;
 
-			    switch (point.ValueRO.Hand)
+			    switch (point.ValueRO.EHand)
 			    {
-				    case Hand.Left:
+				    case EHand.Left:
 					    leftPos[id] = pos;
 					    leftId[id] = point.ValueRO.ID;
 					    break;
-				    case Hand.Right:
+				    case EHand.Right:
 					    rightPos[id] = pos;
 					    rightId[id] = point.ValueRO.ID;
 					    break;
