@@ -51,6 +51,21 @@ namespace ProjectionMapping
 		    }
 	    }
 
+	    protected override bool ActivateFor<T>(T target)
+	    {
+		    if (target is null)
+		    {
+			    foreach (var c in children)
+			    {
+				    c.SetActive(false);
+			    }
+			    SetActive(false);
+			    return false;
+		    }
+		    SetActive(true);
+		    return true;
+	    }
+
 	    protected override PointBridgeListAnnotation InstantiateChild(bool active = true)
 	    {
 		    var c = base.InstantiateChild(active);

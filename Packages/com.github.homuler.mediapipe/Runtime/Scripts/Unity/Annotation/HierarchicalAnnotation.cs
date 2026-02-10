@@ -50,7 +50,7 @@ namespace Mediapipe.Unity
 		// activeInHierarchy include whether the object's parent is also active or not
 		public bool isActiveInHierarchy => gameObject.activeInHierarchy;
 
-		public void SetActive(bool active)
+		public virtual void SetActive(bool active)
 		{
 			if (gameObject.activeSelf != active)
 			{
@@ -67,7 +67,7 @@ namespace Mediapipe.Unity
 		///   In effect, it returns if <paramref name="target" /> is null or not.
 		/// </return>
 		/// <param name="target">Data to be annotated</param>
-		protected bool ActivateFor<T>(T target)
+		protected virtual bool ActivateFor<T>(T target)
 		{
 			if (target is null)
 			{

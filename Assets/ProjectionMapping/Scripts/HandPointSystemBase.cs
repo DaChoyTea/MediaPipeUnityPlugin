@@ -13,12 +13,12 @@ namespace ProjectionMapping
     {
 	    protected override void OnCreate()
 	    {
-		    EntityManager.CreateEntity(typeof(HandTrackingISingleton));
+		    RequireForUpdate<HandTrackingISingleton>();
 	    }
 
 	    protected override void OnUpdate()
 	    {
-		    var handTracking = SystemAPI.GetSingleton<HandTrackingISingleton>();
+		    //var handTracking = SystemAPI.GetSingleton<HandTrackingISingleton>();
 	    }
     }
 }

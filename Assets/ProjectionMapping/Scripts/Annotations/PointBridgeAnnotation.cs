@@ -18,27 +18,26 @@ namespace ProjectionMapping
 	    public Hand hand;
 	    public byte id;
 	    public bool isTracked;
-	    private Entity _entity;
+	    public Entity Entity;
 
 	    public void Draw(NormalizedLandmark target)
 	    {
 		    if (!ActivateFor(target)) return;
 		    var position = GetScreenRect().GetPoint(target, rotationAngle, isMirrored);
 		    
-		    if(_entity == Entity.Null)
-			    _entity = EManager.CreateEntity(EntityArchetype);
+		    if(Entity == Entity.Null)
+			    Entity = EManager.CreateEntity(EntityArchetype);
 		    
-		    EManager.SetComponentData(_entity, new LocalTransform
+		    EManager.SetComponentData(Entity, new LocalTransform
 		    {
 			    Position = position
 		    });
-		    EManager.SetComponentData(_entity, new HandPointIData
+		    EManager.SetComponentData(Entity, new HandPointIData
 		    {
 			    ID = id,
 			    Hand = hand,
 			    IsTracked = isTracked
 		    });
 	    }
-	    
     }
 }

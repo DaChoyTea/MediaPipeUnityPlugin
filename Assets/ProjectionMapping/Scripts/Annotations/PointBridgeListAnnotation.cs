@@ -46,6 +46,27 @@ namespace ProjectionMapping
 		    }
 	    }
 
+	    public override void SetActive(bool active)
+	    {
+		    if (!active)
+		    {
+			    foreach (var c in children)
+			    {
+				    EManager.SetComponentData(c.Entity, new HandPointIData
+				    {
+					    ID = c.id,
+					    Hand = Hand.None,
+					    IsTracked = c.isTracked
+				    });
+			    }
+		    }
+		    
+		    if (gameObject.activeSelf != active)
+		    {
+			    gameObject.SetActive(active);
+		    }
+	    }
+
 	    protected override PointBridgeAnnotation InstantiateChild(bool active = true)
 	    {
 		    var c = base.InstantiateChild(active);

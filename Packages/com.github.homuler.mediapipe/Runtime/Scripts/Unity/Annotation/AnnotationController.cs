@@ -67,7 +67,7 @@ namespace Mediapipe.Unity
 			rectTransform.sizeDelta = float2.zero;
 		}
 
-		protected virtual void LateUpdate()
+		protected virtual void Update()
 		{
 			if (isStale)
 			{
