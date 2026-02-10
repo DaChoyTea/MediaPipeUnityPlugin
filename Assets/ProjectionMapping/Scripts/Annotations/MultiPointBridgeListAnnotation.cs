@@ -22,7 +22,8 @@ namespace ProjectionMapping
 			    _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 			    _entityArchetype = _entityManager.CreateArchetype(
 				    typeof(LocalTransform),
-				    typeof(HandPointIData));
+				    typeof(HandPointIData),
+				    typeof(PointSpawnIData));
 		    }
 		    catch (Exception e){ Debug.Log(e);}
 	    }

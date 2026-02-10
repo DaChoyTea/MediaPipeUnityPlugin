@@ -24,13 +24,14 @@ namespace ProjectionMapping
 	    {
 		    if (!ActivateFor(target)) return;
 		    var position = GetScreenRect().GetPoint(target, rotationAngle, isMirrored);
+		    transform.localPosition = position;
 		    
 		    if(Entity == Entity.Null)
 			    Entity = EManager.CreateEntity(EntityArchetype);
 		    
 		    EManager.SetComponentData(Entity, new LocalTransform
 		    {
-			    Position = position
+			    Position = transform.localToWorldMatrix.GetPosition()
 		    });
 		    EManager.SetComponentData(Entity, new HandPointIData
 		    {

@@ -1,4 +1,5 @@
 using Unity.Burst;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Rendering;
@@ -32,7 +33,7 @@ namespace EugeneC.ECS
         [BurstCompile(CompileSynchronously = true)]
         private partial struct Job : IJobEntity
         {
-	        public BufferLookup<DestroyBufferEntryIBuffer> DestroyLookup;
+	        [NativeDisableParallelForRestriction] public BufferLookup<DestroyBufferEntryIBuffer> DestroyLookup;
 	        public VoxelizerISingleton Voxelizer;
 	        public float ElapsedTime;
 	        public float DeltaTime;
@@ -41,10 +42,10 @@ namespace EugeneC.ECS
 		        ref LocalTransform lt, ref BoxIData box, ref URPMaterialPropertyBaseColor urp)
 	        {
 		        box.ExistTime += DeltaTime;
-		        if (box.ExistTime <= 0)
+		        if (box.ExistTime >= Voxelizer.VoxelLife)
 		        {
 			        var d = DestroyLookup[entity];
-			        d.Add(new DestroyBufferEntryIBuffer() { Value = 1 });
+			        d.Add(new DestroyBufferEntryIBuffer{ Value = 1 });
 		        }
 		        
 		        box.Velocity -= Voxelizer.Gravity * DeltaTime;

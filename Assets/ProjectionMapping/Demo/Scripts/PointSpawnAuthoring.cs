@@ -1,8 +1,6 @@
-using System;
 using EugeneC.ECS;
 using Unity.Entities;
 using UnityEngine;
-using Random = Unity.Mathematics.Random;
 
 namespace ProjectionMapping
 {
@@ -10,27 +8,21 @@ namespace ProjectionMapping
     public sealed class PointSpawnAuthoring : MonoBehaviour
     {
 	    [SerializeField] private BoxAuthoring prefab;
-	    [SerializeField] private LayerMask layerMask;
+	    [SerializeField, Min(0.01f)] private float scale = 0.05f;
 	    [SerializeField, Min(0.1f)] private float frequency = 100;
-
-	    private uint _id;
-
-	    private void OnValidate()
-	    {
-		    _id = (uint)this.gameObject.GetInstanceID();
-	    }
-
+	    
 	    public class Baker : Baker<PointSpawnAuthoring>
 	    {
 		    public override void Bake(PointSpawnAuthoring authoring)
 		    {
+			    DependsOn(authoring.prefab);
+			    
 			    var e = GetEntity(TransformUsageFlags.Dynamic);
 			    AddComponent(e, new PointSpawnISingleton
 			    {
-				    Prefab = GetEntity(authoring.prefab, TransformUsageFlags.Dynamic),
-				    LayerMask = authoring.layerMask.value,
-				    Frequency = authoring.frequency,
-				    Random = new Random((uint) System.DateTime.Now.Ticks + authoring._id)
+				    Prefab = GetEntity(authoring.prefab.gameObject, TransformUsageFlags.Dynamic),
+				    Scale = authoring.scale,
+				    Frequency = authoring.frequency
 			    });
 		    }
 	    }
@@ -39,8 +31,7 @@ namespace ProjectionMapping
     public struct PointSpawnISingleton : IComponentData
     {
 	    public Entity Prefab;
-	    public int LayerMask;
+	    public float Scale;
 	    public float Frequency;
-	    public Random Random;
     }
 }

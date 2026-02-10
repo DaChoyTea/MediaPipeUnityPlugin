@@ -9,4 +9,9 @@ namespace ProjectionMapping
 	    public Hand Hand;
 	    public bool IsTracked;
     }
+    
+    public struct PointSpawnIData : IComponentData
+    {
+	    public float CurrentTime;
+    }
 }
