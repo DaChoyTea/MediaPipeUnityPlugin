@@ -21,7 +21,6 @@ namespace ProjectionMapping
         public void OnUpdate(ref SystemState state)
         {
 	        var dt = SystemAPI.Time.DeltaTime;
-	        var et = SystemAPI.Time.ElapsedTime;
 	        var em = state.EntityManager;
 	        var spawn = SystemAPI.GetSingleton<PointSpawnISingleton>();
 
@@ -36,7 +35,7 @@ namespace ProjectionMapping
 		        var p = em.Instantiate(spawn.Prefab);
 		        var pLt = em.GetComponentData<LocalTransform>(p);
 		        
-		        pLt.Position = lt.ValueRO.Position + HelperCollection.Random01(entity, et);
+		        pLt.Position = lt.ValueRO.Position;
 		        pLt.Scale = spawn.Scale;
 		        
 		        em.SetComponentData(p, pLt);

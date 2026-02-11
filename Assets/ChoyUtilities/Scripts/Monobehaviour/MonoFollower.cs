@@ -30,6 +30,8 @@ namespace EugeneC.Mono
 			if (target is null) return;
 			transform.position =
 				math.lerp(transform.position, (float3)target.position + offset, _factor * Time.deltaTime);
+			transform.rotation =
+				math.slerp(transform.rotation, target.rotation, _factor * Time.deltaTime);
 		}
 	}
 }

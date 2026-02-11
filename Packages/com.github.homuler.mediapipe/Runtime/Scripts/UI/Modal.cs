@@ -14,14 +14,14 @@ namespace Mediapipe.Unity.Sample.UI
 
 		private GameObject _contents;
 
-		public void Open(GameObject contents)
+		public virtual void Open(GameObject contents)
 		{
 			_contents = Instantiate(contents, gameObject.transform);
 			_contents.transform.localScale = new Vector3(0.8f, 0.8f, 1);
 			gameObject.SetActive(true);
 		}
 
-		public void OpenAndPause(GameObject contents)
+		public virtual void OpenAndPause(GameObject contents)
 		{
 			Open(contents);
 			if (_baseRunner != null)
@@ -30,7 +30,7 @@ namespace Mediapipe.Unity.Sample.UI
 			}
 		}
 
-		public void Close()
+		public virtual void Close()
 		{
 			gameObject.SetActive(false);
 
@@ -40,7 +40,7 @@ namespace Mediapipe.Unity.Sample.UI
 			}
 		}
 
-		public void CloseAndResume(bool forceRestart = false)
+		public virtual void CloseAndResume(bool forceRestart = false)
 		{
 			Close();
 

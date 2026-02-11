@@ -52,7 +52,7 @@ namespace EugeneC.ECS
 	}
 
 	[BurstCompile]
-	public struct CastIJob : IJob
+	public struct MouseCastIJob : IJob
 	{
 		[ReadOnly] public CollisionWorld CollisionWorld;
 		[ReadOnly] public bool IgnoreTriggers;
@@ -96,7 +96,7 @@ namespace EugeneC.ECS
 					Entity = hitBody.Entity,
 					Picked = true,
 					PointOnBody = pointOnBody,
-					MouseDepth = Near + rayDot * fraction * MaxDistance
+					Depth = Near + rayDot * fraction * MaxDistance
 				};
 			}
 			else
@@ -114,6 +114,6 @@ namespace EugeneC.ECS
 		public Entity Entity;
 		public bool Picked;
 		public float3 PointOnBody;
-		public float MouseDepth;
+		public float Depth;
 	}
 }

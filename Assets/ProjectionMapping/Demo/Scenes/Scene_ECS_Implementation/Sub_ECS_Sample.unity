@@ -237,6 +237,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1262669431}
   - component: {fileID: 1262669430}
+  - component: {fileID: 1262669434}
   - component: {fileID: 1262669433}
   - component: {fileID: 1262669432}
   m_Layer: 0
@@ -287,7 +288,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 4621511716979169331, guid: 4e755d5ce6f24da459dc5dd99c8759a1, type: 3}
   scale: 1
-  frequency: 100
+  frequency: 60
 --- !u!114 &1262669433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -300,12 +301,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47a65ec75124433ba95806051e66e5e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  voxelSize: 0.5
+  voxelSize: 0.3
   voxelLife: 0.3
   colorFrequency: 0.5
   colorSpeed: 0.5
   groundLevel: -10
   gravity: 0.2
+--- !u!114 &1262669434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1262669429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf4ccfd9f29deca46a1dcb4ed636c78e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ignoreTriggers: 1
+  ignoreStatic: 1
+  deleteAllEntityOnClick: 0
+  deleteTagEntityOnClick: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

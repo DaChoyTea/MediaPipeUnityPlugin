@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/ProjectionMapping/Scenes/Scene_Grab&Drop.unity
-    guid: c4584913cb577c94e951f4abb28bcd1d
+    path: Assets/ProjectionMapping/Demo/Scenes/Scene_ECS_Implementation.unity
+    guid: ef4b0486909e6f94788ba4e380f3ec8f
   - enabled: 1
     path: Assets/MediaPipeUnity/Samples/Scenes/Object Detection/Object Detection.unity
     guid: d3734ffcdd3a40779bdd8de2c55bee2f
@@ -42,6 +42,6 @@ EditorBuildSettings:
       type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: e76be05836c4b0b45a037d12d8472153,
       type: 3}
-    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: f43fe063bf771b148a5f2fc693857d72,
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 0ac68c56c458edc49baa413645d4dbce,
       type: 2}
   m_UseUCBPForAssetBundles: 0

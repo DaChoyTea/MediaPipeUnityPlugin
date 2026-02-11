@@ -8,27 +8,35 @@ using Unity.Transforms;
 
 namespace ProjectionMapping
 {
+	public struct HandData
+	{
+		public float Current;
+		public float Previous;
+		public float3 Position;
+	}
+	
+	// Maybe there's a better way to do this, but keep it as it is for now
 	public struct HandTrackingISingleton : IComponentData
 	{
-		public float LWrist2Thumb;
-		public float LWrist2Index;
-		public float LWrist2Middle;
-		public float LWrist2Ring;
-		public float LWrist2Pinky;
-		public float LThumb2Index;
-		public float LIndex2Middle;
-		public float LMiddle2Ring;
-		public float LRing2Pinky;
+		public HandData LWrist2Thumb;
+		public HandData LWrist2Index;
+		public HandData LWrist2Middle;
+		public HandData LWrist2Ring;
+		public HandData LWrist2Pinky;
+		public HandData LThumb2Index;
+		public HandData LIndex2Middle;
+		public HandData LMiddle2Ring;
+		public HandData LRing2Pinky;
 		
-		public float RWrist2Thumb;
-		public float RWrist2Index;
-		public float RWrist2Middle;
-		public float RWrist2Ring;
-		public float RWrist2Pinky;
-		public float RThumb2Index;
-		public float RIndex2Middle;
-		public float RMiddle2Ring;
-		public float RRing2Pinky;
+		public HandData RWrist2Thumb;
+		public HandData RWrist2Index;
+		public HandData RWrist2Middle;
+		public HandData RWrist2Ring;
+		public HandData RWrist2Pinky;
+		public HandData RThumb2Index;
+		public HandData RIndex2Middle;
+		public HandData RMiddle2Ring;
+		public HandData RRing2Pinky;
 	}
 	
 	[BurstCompile]
@@ -80,27 +88,67 @@ namespace ProjectionMapping
 			    }
 		    }
 		    
-		    tracking.LWrist2Thumb = Distance(leftPos, leftId, Wrist, Thumb);
-		    tracking.LWrist2Index = Distance(leftPos, leftId, Wrist, Index);
-		    tracking.LWrist2Middle = Distance(leftPos, leftId, Wrist, Middle);
-		    tracking.LWrist2Ring = Distance(leftPos, leftId, Wrist, Ring);
-		    tracking.LWrist2Pinky = Distance(leftPos, leftId, Wrist, Pinky);
+		    tracking.LWrist2Thumb.Previous = tracking.LWrist2Thumb.Current;
+		    tracking.LWrist2Index.Previous = tracking.LWrist2Index.Current;
+		    tracking.LWrist2Middle.Previous = tracking.LWrist2Middle.Current;
+		    tracking.LWrist2Ring.Previous = tracking.LWrist2Ring.Current;
+		    tracking.LWrist2Pinky.Previous = tracking.LWrist2Pinky.Current;
 		    
-		    tracking.LThumb2Index = Distance(leftPos, leftId, Thumb, Index);
-		    tracking.LIndex2Middle = Distance(leftPos, leftId, Index, Middle);
-		    tracking.LMiddle2Ring = Distance(leftPos, leftId, Middle, Ring);
-		    tracking.LRing2Pinky = Distance(leftPos, leftId, Ring, Pinky);
+		    tracking.LThumb2Index.Previous = tracking.LThumb2Index.Current;
+		    tracking.LIndex2Middle.Previous = tracking.LIndex2Middle.Current;
+		    tracking.LMiddle2Ring.Previous = tracking.LMiddle2Ring.Current;
+		    tracking.LRing2Pinky.Previous = tracking.LRing2Pinky.Current;
 		    
-		    tracking.RWrist2Thumb = Distance(rightPos, rightId, Wrist, Thumb);
-		    tracking.RWrist2Index = Distance(rightPos, rightId, Wrist, Index);
-		    tracking.RWrist2Middle = Distance(rightPos, rightId, Wrist, Middle);
-		    tracking.RWrist2Ring = Distance(rightPos, rightId, Wrist, Ring);
-		    tracking.RWrist2Pinky = Distance(rightPos, rightId, Wrist, Pinky);
+		    tracking.RWrist2Thumb.Previous = tracking.RWrist2Thumb.Current;
+		    tracking.RWrist2Index.Previous = tracking.RWrist2Index.Current;
+		    tracking.RWrist2Middle.Previous = tracking.RWrist2Middle.Current;
+		    tracking.RWrist2Ring.Previous = tracking.RWrist2Ring.Current;
+		    tracking.RWrist2Pinky.Previous = tracking.RWrist2Pinky.Current;
 		    
-		    tracking.RThumb2Index = Distance(rightPos, rightId, Thumb, Index);
-		    tracking.RIndex2Middle = Distance(rightPos, rightId, Index, Middle);
-		    tracking.RMiddle2Ring = Distance(rightPos, rightId, Middle, Ring);
-		    tracking.RRing2Pinky = Distance(rightPos, rightId, Ring, Pinky);
+		    tracking.RThumb2Index.Previous = tracking.RThumb2Index.Current;
+		    tracking.RIndex2Middle.Previous = tracking.RIndex2Middle.Current;
+		    tracking.RMiddle2Ring.Previous = tracking.RMiddle2Ring.Current;
+		    tracking.RRing2Pinky.Previous = tracking.RRing2Pinky.Current;
+		    
+		    (tracking.LWrist2Thumb.Current, tracking.LWrist2Thumb.Position) 
+			    = DistanceBetween(leftPos, leftId, Wrist, Thumb);
+		    (tracking.LWrist2Index.Current, tracking.LWrist2Index.Position)
+			    = DistanceBetween(leftPos, leftId, Wrist, Index);
+		    (tracking.LWrist2Middle.Current, tracking.LWrist2Middle.Position)
+			    = DistanceBetween(leftPos, leftId, Wrist, Middle);
+		    (tracking.LWrist2Ring.Current, tracking.LWrist2Ring.Position)
+			    = DistanceBetween(leftPos, leftId, Wrist, Ring);
+		    (tracking.LWrist2Pinky.Current, tracking.LWrist2Pinky.Position)
+			    = DistanceBetween(leftPos, leftId, Wrist, Pinky);
+		    
+		    (tracking.LThumb2Index.Current, tracking.LThumb2Index.Position)
+			    = DistanceBetween(leftPos, leftId, Thumb, Index);
+		    (tracking.LIndex2Middle.Current, tracking.LIndex2Middle.Position)
+			    = DistanceBetween(leftPos, leftId, Index, Middle);
+		    (tracking.LMiddle2Ring.Current, tracking.LMiddle2Ring.Position)
+			    = DistanceBetween(leftPos, leftId, Middle, Ring);
+		    (tracking.LRing2Pinky.Current, tracking.LRing2Pinky.Position)
+			    = DistanceBetween(leftPos, leftId, Ring, Pinky);
+		    
+		    (tracking.RWrist2Thumb.Current, tracking.RWrist2Thumb.Position)
+			    = DistanceBetween(rightPos, rightId, Wrist, Thumb);
+		    (tracking.RWrist2Index.Current, tracking.RWrist2Index.Position)
+			    = DistanceBetween(rightPos, rightId, Wrist, Index);
+		    (tracking.RWrist2Middle.Current, tracking.RWrist2Middle.Position)
+			    = DistanceBetween(rightPos, rightId, Wrist, Middle);
+		    (tracking.RWrist2Ring.Current, tracking.RWrist2Ring.Position)
+			    = DistanceBetween(rightPos, rightId, Wrist, Ring);
+		    (tracking.RWrist2Pinky.Current, tracking.RWrist2Pinky.Position)
+			    = DistanceBetween(rightPos, rightId, Wrist, Pinky);
+		    
+		    (tracking.RThumb2Index.Current, tracking.RThumb2Index.Position)
+			    = DistanceBetween(rightPos, rightId, Thumb, Index);
+		    (tracking.RIndex2Middle.Current, tracking.RIndex2Middle.Position)
+			    = DistanceBetween(rightPos, rightId, Index, Middle);
+		    (tracking.RMiddle2Ring.Current, tracking.RMiddle2Ring.Position)
+			    = DistanceBetween(rightPos, rightId, Middle, Ring);
+		    (tracking.RRing2Pinky.Current, tracking.RRing2Pinky.Position)
+			    = DistanceBetween(rightPos, rightId, Ring, Pinky);
 		    
 		    SystemAPI.SetSingleton(tracking);
 
@@ -110,11 +158,10 @@ namespace ProjectionMapping
 		    rightId.Dispose();
 	    }
 
-	    private float Distance(NativeArray<float3> pos, NativeArray<byte> id, int hand1, int hand2)
+	    private (float, float3) DistanceBetween(NativeArray<float3> pos, NativeArray<byte> id, int id1, int id2)
 	    {
-		    if (hand1 < 0 || hand1 >= 21 || hand2 < 0 || hand2 >= 21) return -1f;
-		    if (id[hand1] != hand1 || id[hand2] != hand2) return -1f;
-		    return math.distance(pos[hand1], pos[hand2]);
+		    if (id[id1] != id1 || id[id2] != id2) return (-1f, float3.zero);
+		    return (math.distance(pos[id1], pos[id2]), math.lerp(pos[id1], pos[id2], 0.5f));
 	    }
     }
 }

@@ -90,7 +90,7 @@ namespace EugeneC.ECS
 
 					var camRay = cam.ScreenPointToRay(new Vector3(input.Position.x, input.Position.y, 0));
 
-					Dependency = new CastIJob
+					Dependency = new MouseCastIJob
 					{
 						CollisionWorld = physicsWorld.CollisionWorld,
 						IgnoreStatic = grab.IgnoreStatic,
@@ -185,7 +185,7 @@ namespace EugeneC.ECS
 
 			var bodyCenterNPointWorldPos = Mul(worldFromBody, data.PointOnBody);
 			var camWorldPos =
-				(float3)cam.ScreenToWorldPoint(new Vector3(input.Position.x, input.Position.y, data.MouseDepth));
+				(float3)cam.ScreenToWorldPoint(new Vector3(input.Position.x, input.Position.y, data.Depth));
 
 			var bodyCenterNPointLocalPos = Mul(Inverse(bodyFromMotion), data.PointOnBody);
 			float3 deltaVel;

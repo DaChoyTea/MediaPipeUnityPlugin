@@ -1,5 +1,6 @@
 using Mediapipe.Unity;
 using Unity.Entities;
+using Unity.Mathematics;
 
 namespace ProjectionMapping
 {
@@ -14,6 +15,17 @@ namespace ProjectionMapping
     {
 	    public float CurrentTime;
     }
-    
-    public struct HandGrabbableITag : IComponentData { }
+
+    public struct GrabbableData
+    {
+	    public bool Valid;
+	    public Entity Target;
+	    public float3 PointOnBody;
+	    public float3 Origin;
+    }
+
+    public struct HandGrabbableIData : IComponentData
+    {
+	    public bool IsGrabbed;
+    }
 }
