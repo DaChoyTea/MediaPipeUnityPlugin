@@ -34,12 +34,39 @@ namespace ProjectionMapping
 		}
 	}
 
-	[UpdateInGroup(typeof(Eu_PostTransformSystemGroup))]
-	public partial class HandPinchInputSystemBase : SystemBase
+	// Check once, if false disable related systems.
+	[UpdateInGroup(typeof(Eu_InitializationSystemGroup))]
+	public partial class HandGrabAnyCheckSystemBase : SystemBase
 	{
-		public readonly JobHandle[] PickJobHandles = new JobHandle[Enum.GetValues(typeof(ETrackingTarget)).Length];
+		private HandGrabAnyInputSystemBase _inputSystemBase;
+		private HandGrabAnyFollowSystemBase _grabSystemBase;
+		
+		protected override void OnCreate()
+		{
+			_inputSystemBase = World.GetOrCreateSystemManaged<HandGrabAnyInputSystemBase>();
+			_grabSystemBase = World.GetOrCreateSystemManaged<HandGrabAnyFollowSystemBase>();
+			RequireForUpdate<HandSettingISingleton>();
+		}
 
-		// Job writes here; The main thread reads after completing the handle.
+		protected override void OnUpdate()
+		{
+			var settings = SystemAPI.GetSingleton<HandSettingISingleton>();
+			if (!settings.UseGrabAny)
+			{
+				_inputSystemBase.Enabled = false;
+				_grabSystemBase.Enabled = false;
+			}
+			
+			Enabled = false;
+		}
+	}
+
+	[UpdateInGroup(typeof(Eu_PreTransformSystemGroup))]
+	public partial class HandGrabAnyInputSystemBase : SystemBase
+	{
+		public readonly JobHandle[] PickJobHandles = 
+			new JobHandle[Enum.GetValues(typeof(ETrackingTarget)).Length];
+		
 		public readonly NativeReference<GrabbableData>[] GrabRefs =
 			new NativeReference<GrabbableData>[Enum.GetValues(typeof(ETrackingTarget)).Length];
 
@@ -76,7 +103,7 @@ namespace ProjectionMapping
 
 					case < 1f when tracking.GetPrevious(t) > 1:
 					{
-						// Ensure any previous pick for this hand finished before rescheduling into the same NativeReference.
+						// Ensure any previous pick for this hand finished before rescheduling into the same nativeref.
 						PickJobHandles[idx].Complete();
 
 						Dependency = new GrabIJob
@@ -120,14 +147,14 @@ namespace ProjectionMapping
 		}
 	}
 
-	[UpdateInGroup(typeof(Eu_PreTransformSystemGroup))]
-	public partial class HandPinchGrabFollowSystemBase : SystemBase
+	[UpdateInGroup(typeof(Eu_PostTransformSystemGroup))]
+	public partial class HandGrabAnyFollowSystemBase : SystemBase
 	{
-		private HandPinchInputSystemBase _grabSystemBase;
+		private HandGrabAnyInputSystemBase _grabSystemBase;
 
 		protected override void OnCreate()
 		{
-			_grabSystemBase = World.GetOrCreateSystemManaged<HandPinchInputSystemBase>();
+			_grabSystemBase = World.GetOrCreateSystemManaged<HandGrabAnyInputSystemBase>();
 			RequireForUpdate<ColliderCastISingleton>();
 			RequireForUpdate<HandTrackingISingleton>();
 		}
@@ -177,7 +204,7 @@ namespace ProjectionMapping
 				}
 
 				if (!SystemAPI.HasComponent<PhysicsMass>(entity)) continue;
-				//if (!SystemAPI.HasComponent<HandGrabbableIData>(entity)) continue;
+				if (!SystemAPI.HasComponent<HandGrabbableIData>(entity)) continue;
 				if (SystemAPI.HasComponent<PhysicsMassOverride>(entity)) continue;
 
 				var mass = SystemAPI.GetComponent<PhysicsMass>(entity);

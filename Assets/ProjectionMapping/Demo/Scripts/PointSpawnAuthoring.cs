@@ -9,7 +9,7 @@ namespace ProjectionMapping
     {
 	    [SerializeField] private BoxAuthoring prefab;
 	    [SerializeField, Min(0.01f)] private float scale = 0.05f;
-	    [SerializeField, Min(0.1f)] private float frequency = 100;
+	    [SerializeField, Range(0.1f, 200f)] private float frequency = 100;
 	    
 	    public class Baker : Baker<PointSpawnAuthoring>
 	    {

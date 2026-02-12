@@ -10,6 +10,11 @@ namespace ProjectionMapping
 	    public EHand EHand;
 	    public bool IsTracked;
     }
+
+    public struct HandSettingISingleton : IComponentData
+    {
+	    public bool UseGrabAny;
+    }
     
     public struct PointSpawnIData : IComponentData
     {
