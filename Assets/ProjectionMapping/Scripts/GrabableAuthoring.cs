@@ -38,13 +38,13 @@ namespace ProjectionMapping
 	[UpdateInGroup(typeof(Eu_InitializationSystemGroup))]
 	public partial class HandGrabAnyCheckSystemBase : SystemBase
 	{
-		private HandGrabAnyInputSystemBase _inputSystemBase;
-		private HandGrabAnyFollowSystemBase _grabSystemBase;
+		private HandGrabAnyInputSystemBase _inputAnySystemBase;
+		private HandGrabAnyFollowSystemBase _grabAnySystemBase;
 		
 		protected override void OnCreate()
 		{
-			_inputSystemBase = World.GetOrCreateSystemManaged<HandGrabAnyInputSystemBase>();
-			_grabSystemBase = World.GetOrCreateSystemManaged<HandGrabAnyFollowSystemBase>();
+			_inputAnySystemBase = World.GetOrCreateSystemManaged<HandGrabAnyInputSystemBase>();
+			_grabAnySystemBase = World.GetOrCreateSystemManaged<HandGrabAnyFollowSystemBase>();
 			RequireForUpdate<HandSettingISingleton>();
 		}
 
@@ -53,8 +53,12 @@ namespace ProjectionMapping
 			var settings = SystemAPI.GetSingleton<HandSettingISingleton>();
 			if (!settings.UseGrabAny)
 			{
-				_inputSystemBase.Enabled = false;
-				_grabSystemBase.Enabled = false;
+				_inputAnySystemBase.Enabled = false;
+				_grabAnySystemBase.Enabled = false;
+			}
+			else if (!settings.UseGesture)
+			{
+				
 			}
 			
 			Enabled = false;

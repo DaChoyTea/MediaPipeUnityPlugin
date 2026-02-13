@@ -7,10 +7,13 @@ namespace ProjectionMapping
     public sealed class HandTrackSingletonAuthoring : MonoBehaviour
     {
 	    [SerializeField] private bool useGrabAny;
+	    [SerializeField] private bool useGesture;
+	    [SerializeField] private EHandPose gestureType;
 	    
 	    private void OnValidate()
 	    {
-		    
+		    if(useGrabAny) useGesture = false;
+		    if(useGesture) useGrabAny = false;
 	    }
 
 	    public class Baker : Baker<HandTrackSingletonAuthoring>
@@ -22,7 +25,9 @@ namespace ProjectionMapping
 			    AddComponent<HandPoseISingleton>(e);
 			    AddComponent(e, new HandSettingISingleton
 			    {
-				    UseGrabAny = authoring.useGrabAny
+				    UseGrabAny = authoring.useGrabAny,
+				    UseGesture = authoring.useGesture,
+				    GestureType = authoring.gestureType
 			    });
 		    }
 	    }

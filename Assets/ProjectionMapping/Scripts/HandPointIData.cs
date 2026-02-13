@@ -14,6 +14,8 @@ namespace ProjectionMapping
     public struct HandSettingISingleton : IComponentData
     {
 	    public bool UseGrabAny;
+	    public bool UseGesture;
+	    public EHandPose GestureType;
     }
 
     public struct HandPoseISingleton : IComponentData
