@@ -1,6 +1,4 @@
-using System;
 using EugeneC.ECS;
-using Google.Protobuf.WellKnownTypes;
 using Mediapipe.Unity;
 using Unity.Burst;
 using Unity.Collections;
@@ -167,11 +165,17 @@ namespace ProjectionMapping
 		    rightPos.Dispose();
 		    leftId.Dispose();
 		    rightId.Dispose();
+		    
+		    pose.LeftPreviousHandPose = pose.LeftCurrentHandPose;
+		    pose.RightPreviousHandPose = pose.RightCurrentHandPose;
 
 		    var (lValid, left) = tracking.GetHand(EHand.Left);
-		    pose.LeftHandPose = lValid ? left.GetPose() : EHandPose.None;
+		    pose.LeftCurrentHandPose = lValid ? left.GetPose() : EHandPose.None;
 		    var (rValid, right) = tracking.GetHand(EHand.Right);
-		    pose.RightHandPose = rValid ? right.GetPose() : EHandPose.None;
+		    pose.RightCurrentHandPose = rValid ? right.GetPose() : EHandPose.None;
+
+		    pose.LeftOrigin = tracking.LeftHand.Pinky2Thumb.Position;
+		    pose.RightOrigin = tracking.RightHand.Pinky2Thumb.Position;
 		    SystemAPI.SetSingleton(pose);
 	    }
 

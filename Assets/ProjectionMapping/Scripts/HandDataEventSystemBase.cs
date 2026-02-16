@@ -20,7 +20,7 @@ namespace ProjectionMapping
 		{
 			var tracking = SystemAPI.GetSingleton<HandTrackingISingleton>();
 			var pose = SystemAPI.GetSingleton<HandPoseISingleton>();
-			OnPoseChanged?.Invoke(pose.LeftHandPose, pose.RightHandPose);
+			OnPoseChanged?.Invoke(pose.LeftCurrentHandPose, pose.RightCurrentHandPose);
 			OnHandDataChanged?.Invoke(tracking.LeftHand, tracking.RightHand);
 		}
 	}

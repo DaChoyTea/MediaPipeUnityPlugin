@@ -20,8 +20,12 @@ namespace ProjectionMapping
 
     public struct HandPoseISingleton : IComponentData
     {
-	    public EHandPose LeftHandPose;
-	    public EHandPose RightHandPose;
+	    public EHandPose LeftCurrentHandPose;
+	    public EHandPose LeftPreviousHandPose;
+	    public float3 LeftOrigin;
+	    public EHandPose RightCurrentHandPose;
+	    public EHandPose RightPreviousHandPose;
+	    public float3 RightOrigin;
     }
     
     public struct PointSpawnIData : IComponentData
